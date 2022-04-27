@@ -1,0 +1,36 @@
+:host{
+    padding:20px;
+    background-color: rgb(32, 32, 32);
+    color: white;
+    margin-top: 50px;
+}
+.list-group-item:hover{
+    background-color: rgb(235, 235, 235);
+    color: black;
+}
+.list-group-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color:white;
+    background-color: #222020;
+}
+
+.btn-danger{
+    background-color: #180605;
+}
+#deletebtn{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    height: 20px;
+  }
+  .btn-danger{
+    background-color: #180605;
+}
+.active{
+    color:#d43c3c;
+}

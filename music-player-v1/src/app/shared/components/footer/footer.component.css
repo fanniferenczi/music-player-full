@@ -1,0 +1,58 @@
+footer{
+    padding: 10px;
+    background-color: #060a05;
+    position:fixed;
+    bottom: 0;
+    width: 100%;
+}
+::ng-deep .mat-progress-bar-fill::after {
+    background-color: #d43c3c
+  }
+  
+  ::ng-deep .mat-progress-bar-buffer {
+    background: #E4E8EB;
+  }
+  
+  ::ng-deep .mat-progress-bar {
+    border-radius: 2px;
+  }
+  #navbtn{
+    display: flex;
+    justify-content: space-between;
+    color: white;
+  }
+  
+  .play_pause{
+    margin-left: 5px;
+    margin-right: 5px;   
+  }
+  .title{
+    display: flex;
+    justify-content: center; 
+    color: white;
+  }
+  .progress_bar{
+    height: 10px;
+    width: 100%;
+    background-color: white;
+  }
+  .progressed{
+    height: 10px;
+    background-color: #d43c3c;
+    transition: all 0.3s;
+  }
+  .volumeBar{
+    height: 5px;
+    width: 35px;
+    background-color: white;
+  }
+  .volume{
+    height: 5px;
+    background-color: #dc3545;
+    transition: all 0.3s;
+  }
+  .volumeSetter{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }

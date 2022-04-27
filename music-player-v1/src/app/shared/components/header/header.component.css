@@ -1,0 +1,12 @@
+header{
+    height: 50px;
+    position: fixed;
+    top:0%;
+    width: 100%;
+    background-color: #d43c3c;
+    
+}
+.title{
+    margin-top: 10px;
+    padding-left: 5px;
+}
