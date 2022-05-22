@@ -10,21 +10,20 @@
     <div *ngIf="song">
       <div class="progressed" [style.width.%]="song.currentTime*(100/song.duration)"></div> 
     </div>
-    
   </div>
 
-  <div id="navbtn">
+  <div class="navigation">
     <div *ngIf="song">
       <p>{{song.currentTime/60 | number:'2.0-0'}}:{{song.currentTime%60 | number:'2.0-0'}}</p>
     </div>
     <div *ngIf="song===undefined">00:00</div>
-    
 
     <div style="margin-top: 5px;">
       <button  class="btn btn-danger" >Generate</button>
     </div>
-    <div class="nav" style="margin-top: 5px;">
-      <button class="btn btn-danger" (click)="onBackSong(song)" >Back</button>
+
+    <div style="margin-top: 5px; margin-left: 5px;">
+      <button class="btn btn-danger" (click)="onBackSong(song)">Back</button>
       <button class="btn btn-danger play_pause" (click)="play(song)">
         <div *ngIf="song===undefined || !isPlaying">
            Play
@@ -33,11 +32,12 @@
           Pause
         </div>
       </button>
-      <button class="btn btn-danger" (click)="onNextSong(song)" >Next</button>
+      <button class="btn btn-danger" (click)="onNextSong(song)">Next</button>
     </div>
-    <div class="volumeSetter" style="margin-top: 5px;" >
+
+    <div class="volumeSetter" style="margin-top: 5px;">
       <button  class="btn btn-danger"  style="margin-right: 3px; padding: 3px;" (click)="onVolumeDown(song)">-</button>
-      <div class="volumeBar" >
+      <div class="volumeBar">
         <div *ngIf="song">
           <div class="volume" [style.width.%]="song.volume*100"></div>
         </div>
@@ -51,5 +51,4 @@
     <div *ngIf="song===undefined">00:00</div>
     
   </div>
-  
 </footer>

@@ -15,7 +15,6 @@ namespace MusicPlayerBlob.Services
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient= containerClient.GetBlobClient(model.SongFile.FileName);
-
             await blobClient.UploadAsync(model.SongFile.OpenReadStream());
 
         }
@@ -24,9 +23,7 @@ namespace MusicPlayerBlob.Services
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
             var blobClient = containerClient.GetBlobClient(fileName);
-
             var songDownloaded = await blobClient.DownloadAsync();  //ez egy stram of data
-
             using (MemoryStream ms = new MemoryStream())
             {
                 await songDownloaded.Value.Content.CopyToAsync(ms);  //a memorystream object-ünkbe másoljuk a responsban kapott data stream-et

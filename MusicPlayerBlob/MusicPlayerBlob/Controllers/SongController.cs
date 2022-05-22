@@ -13,7 +13,6 @@ namespace MusicPlayerBlob.Controllers
         public SongController(IBlobService blobService)
         {
             _blobService = blobService;
-
         }
         [HttpPost]
         [Route("upload")]
@@ -22,7 +21,6 @@ namespace MusicPlayerBlob.Controllers
             if(model.SongFile != null)
             {
                 await _blobService.Upload(model, "musiclibrary");
-
             }
             return Ok();
         }
@@ -32,16 +30,14 @@ namespace MusicPlayerBlob.Controllers
         {
             var songData = await _blobService.Read(fileName, "musiclibrary");
             return File(songData, "audio/mpeg");
-
         }
 
-        /*[HttpGet]
-        [Route("getblob")]
-        public async Task<IActionResult> ViewFile(string name)
+      [HttpGet]
+      [Route("get/{fileName}")]
+      public async Task<IActionResult> Get(string fileName)
         {
-            var res = await _blobService.GetBlob(name, "images");
-            return Redirect(res);
-        }*/
+            return Ok(await _blobService.GetBlob(fileName, "musiclibrary"));
+        }
 
         [HttpGet]  //getting all the blobs
         [Route("getAll")]

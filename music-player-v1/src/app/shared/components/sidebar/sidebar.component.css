@@ -2,24 +2,31 @@
     padding: 20px;
     margin-top: 50px;
     background-color: #060a05;
-      color: white;
+    color: white;
+}
+
+.list-group{
+    padding-top: 10px;
 }
 
 .list-group-item:hover{
     background-color: rgb(235, 235, 235);
     color: black;
 }
+
 .list-group-item{
     color:white;
     background-color: #222020;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border: none;
 }
 
 .btn-danger{
     background-color: #180605;
     display: flex;
     align-items: center;
+    font-size:medium;
 }
 

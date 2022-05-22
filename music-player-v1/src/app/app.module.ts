@@ -1,4 +1,5 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { InterceptorService } from './loader/interceptor.service';
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,8 +16,9 @@ import { FormsModule } from '@angular/forms';
 import {NgProgressModule} from 'ngx-progressbar'
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
-//helloooo
 
 @NgModule({
   declarations: [
@@ -37,9 +39,13 @@ import {MatGridListModule} from '@angular/material/grid-list';
     MatProgressBarModule,
     MatGridListModule,
     SharedModule,
-    HttpClientModule
+    HttpClientModule,
+    DragDropModule,
+    MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    {provide:HTTP_INTERCEPTORS,useClass:InterceptorService,multi:true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
