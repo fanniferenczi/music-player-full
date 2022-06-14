@@ -16,7 +16,7 @@ var blobConnection = builder.Configuration.GetValue<string>("AzureStorage");
 //injecting the blobserviceclient into our DI container
 builder.Services.AddSingleton(x => new BlobServiceClient(blobConnection));
 
-//injecting the blobservice into the DI kjhhhg
+//injecting the blobservice into the DI
 builder.Services.AddSingleton<IBlobService, BlobService>();
 
 

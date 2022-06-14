@@ -53,7 +53,10 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
  onClickProgress(event:MouseEvent,song:any){
   //song.currentTime=(event.offsetX/this.progressbarElementRef?.nativeElement.offsetWidth)*song.duration;
-  song.currentTime=20   //sajnos továbbra sem működik
+
+  //ha a zenéket nem stream-eljük működik a kattintásos tekerés a progressbar-on
+  
+  song.currentTime=20   //visszugrik 0-ra, sajnos egyelőre nincs megoldás
   console.log("ugrás")
  }
 
