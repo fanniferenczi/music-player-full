@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "xDWBlKa5uRMMbRGzTCnBIM75dnE49Qtmii4r7oplHztjFKLaJuutbopHW4jQJMrK0qKYF0knUlgmT4KUfEcIVw==",
+  "dgSpecHash": "VxUJtuDNEvpZVPOjLopROdioeFL9T3Y+eRWAi8ufQ6TCJ/J4L0+amJKwt9zAmDeOFvo8tOAmFg9gNaDv+gKEWQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\fanni\\Angular\\music-player\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj",
+  "projectFilePath": "C:\\Users\\fanni\\webapps\\music-player-full\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\fanni\\.nuget\\packages\\azure.core\\1.22.0\\azure.core.1.22.0.nupkg.sha512",
     "C:\\Users\\fanni\\.nuget\\packages\\azure.storage.blobs\\12.11.0\\azure.storage.blobs.12.11.0.nupkg.sha512",

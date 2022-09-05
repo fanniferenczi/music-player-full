@@ -8,7 +8,8 @@ import { CommonModule } from '@angular/common';
 import { MainComponent } from './components/main/main.component';
 import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-
+import { MatSliderModule } from '@angular/material/slider';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -23,7 +24,9 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
     FlexLayoutModule,
     FormsModule,
     MatProgressBarModule,
-    ScrollingModule
+    ScrollingModule,
+    MatSliderModule,
+    DragDropModule
   ],
   exports: [
     HeaderComponent,

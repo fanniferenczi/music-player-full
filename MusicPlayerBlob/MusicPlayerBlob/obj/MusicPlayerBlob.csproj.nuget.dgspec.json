@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\fanni\\Angular\\music-player\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj": {}
+    "C:\\Users\\fanni\\webapps\\music-player-full\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj": {}
   },
   "projects": {
-    "C:\\Users\\fanni\\Angular\\music-player\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj": {
+    "C:\\Users\\fanni\\webapps\\music-player-full\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\fanni\\Angular\\music-player\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj",
+        "projectUniqueName": "C:\\Users\\fanni\\webapps\\music-player-full\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj",
         "projectName": "MusicPlayerBlob",
-        "projectPath": "C:\\Users\\fanni\\Angular\\music-player\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj",
+        "projectPath": "C:\\Users\\fanni\\webapps\\music-player-full\\MusicPlayerBlob\\MusicPlayerBlob\\MusicPlayerBlob.csproj",
         "packagesPath": "C:\\Users\\fanni\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\fanni\\Angular\\music-player\\MusicPlayerBlob\\MusicPlayerBlob\\obj\\",
+        "outputPath": "C:\\Users\\fanni\\webapps\\music-player-full\\MusicPlayerBlob\\MusicPlayerBlob\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\fanni\\AppData\\Roaming\\NuGet\\NuGet.Config",
