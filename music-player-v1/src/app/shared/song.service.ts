@@ -5,25 +5,31 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SongService {
-  sendArray = new Subject();
-  sendAudio=new Subject();
-  sendNext=new Subject();
-  sendBack=new Subject();
+  sendArray = new Subject()
+  sendAudio=new Subject()
+  sendNext=new Subject()
+  sendBack=new Subject()
+  sendIndexes=new Subject()
+
 
   constructor() { }
 
   communicateArray(array:any){
-    this.sendArray.next(array);
+    this.sendArray.next(array)
   }
 
   communicateSong(audio:any){
-    this.sendAudio.next(audio);
+    this.sendAudio.next(audio)
   }
 
   communicateNext(audio:any){
-    this.sendNext.next(audio);
+    this.sendNext.next(audio)
   }
   communicateBack(audio:any){
-    this.sendBack.next(audio);
+    this.sendBack.next(audio)
+  }
+  communicateIndexes(source:number,target:number){
+    let indexes=[source,target]
+    this.sendIndexes.next(indexes)
   }
 }

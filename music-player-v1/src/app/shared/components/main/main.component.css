@@ -5,21 +5,6 @@
     margin-top: 50px;
 }
 
-/*.list-group{
-     overflow: hidden; 
-}
-*/
-
-.list-group-item:hover{
-    background-color: rgb(235, 235, 235);
-    color: black; 
-}
-.list-group-item{
-    color:white;
-    background-color: #222020;
-    font-size:medium;
-    
-}
 
 .deletebtn{
     background-color: transparent;
@@ -64,8 +49,12 @@
     justify-content: space-between; 
     box-sizing: border-box;
     background: #222020;;
-    font-size: 14px; 
+    font-size: 15px; 
   } 
+  .example-box:hover{
+    background-color: rgb(235, 235, 235);
+    color: black; 
+  }
   
   
   .cdk-drag-preview {
@@ -93,3 +82,13 @@
   }
   
 
+  .example-viewport {
+    height: 85%;
+    width: 100%;
+     /* border: 1px solid black;  */
+  }
+  
+  .cdk-drag-preview{
+    background-color: rgb(235, 235, 235);
+    color: black; 
+  } 

@@ -1,7 +1,7 @@
 import { LoaderService } from './../../../loader/loader.service';
 import { SongService } from './../../song.service';
 import { Component, OnInit, Input } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 interface Weight {
   value: number;
   viewValue: string;
@@ -95,20 +95,25 @@ export class MainComponent implements OnInit {
   public onWeightChange(song:any){
   }
 
-  movies = [
-    'Episode I - The Phantom Menace',
-    'Episode II - Attack of the Clones',
-    'Episode III - Revenge of the Sith',
-    'Episode IV - A New Hope',
-    'Episode V - The Empire Strikes Back',
-    'Episode VI - Return of the Jedi',
-    'Episode VII - The Force Awakens',
-    'Episode VIII - The Last Jedi',
-    'Episode IX – The Rise of Skywalker',
-  ];
+
+ /* drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex);
+  }*/
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex);
+    if (event.previousContainer === event.container) {
+      moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex)
+    } else {
+      /*transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex,
+      );*/
+      this.songService.communicateIndexes(event.previousIndex,event.currentIndex)
+    }
   }
+
+  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
 
 }

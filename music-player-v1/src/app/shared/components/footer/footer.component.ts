@@ -2,6 +2,8 @@ import { Song } from './../../../models/song.model';
 import { Tile } from './../../../app.component';
 import { SongService } from './../../song.service';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MatSliderChange } from '@angular/material/slider';
+import { reduce } from 'rxjs';
 
 @Component({
   selector: 'app-footer',
@@ -15,7 +17,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
    this.songService.sendAudio.subscribe(audio=>{
      if(this.isPlaying===true){
-       this.systemVolume=this.song.volume
+        this.systemVolume=this.song.volume
         this.song.pause()
         this.song.currentTime=0
         this.song.load()
@@ -27,6 +29,18 @@ export class FooterComponent implements OnInit, AfterViewInit {
      this.song.ontimeupdate=function(){}
     })
   }
+
+  autoTicks = false;
+  disabled = false;
+  invert = false;
+  max = 1;
+  min = 0;
+  showTicks = false;
+  step = 0.01;
+  thumbLabel = false;
+  // value = 0;
+  vertical = false;
+  tickInterval = 0.01;
 
  systemVolume=0.5
  song:any
@@ -70,8 +84,9 @@ export class FooterComponent implements OnInit, AfterViewInit {
 
  onVolumeUp(song:any){
   if(song.volume<0.9){
-    song.volume+=0.1
-  }
+     song.volume+=0.1
+    }
+  
  }
 
  onVolumeDown(song:any){
@@ -79,6 +94,11 @@ export class FooterComponent implements OnInit, AfterViewInit {
     song.volume-=0.1
   }
  }
+
+ onGenerate(song:any){
+    
+ }
+
 }
  
 

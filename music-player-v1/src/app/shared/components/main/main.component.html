@@ -1,6 +1,13 @@
 
-  <h2>Playlist</h2>    
-    <div *ngIf="arrayFromSidebar?.length" cdkDropList  class="example-list" (cdkDropListDropped)="drop($event)"> 
+  <h2>Playlist</h2>   <button>Generate</button>
+  <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
+    
+    <div id="list-2"
+          cdkDropList  
+          class="example-list" 
+          (cdkDropListDropped)="drop($event)"
+          
+          cdkDropListConnectedTo="list-1"> 
         <div   class="example-box" *ngFor="let song of arrayFromSidebar; let indexOfelement=index;" (dblclick)="play(song)" cdkDrag>
           <div class="container-fluid" > 
             <div class="row" >
@@ -25,7 +32,11 @@
             </div>
           </div> 
         </div>
-    </div> 
+     </div>  
+
+
+     
+    </cdk-virtual-scroll-viewport>
  
      
 

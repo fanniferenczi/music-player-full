@@ -19,7 +19,7 @@
     <div *ngIf="song===undefined">00:00</div>
 
     <div style="margin-top: 5px;">
-      <button  class="btn btn-danger" >Generate</button>
+      <button  class="btn btn-danger" (click)="onGenerate(song)">Generate</button>
     </div>
 
     <div style="margin-top: 5px; margin-left: 5px;">
@@ -34,16 +34,44 @@
       </button>
       <button class="btn btn-danger" (click)="onNextSong(song)">Next</button>
     </div>
-
+ <!-- 
     <div class="volumeSetter" style="margin-top: 5px;">
       <button  class="btn btn-danger"  style="margin-right: 3px; padding: 3px;" (click)="onVolumeDown(song)">-</button>
-      <div class="volumeBar">
+      
+       <div class="volumeBar"> 
         <div *ngIf="song">
           <div class="volume" [style.width.%]="song.volume*100"></div>
         </div>
       </div>
       <button  class="btn btn-danger" style="margin-left: 3px; padding: 2px;" (click)="onVolumeUp(song)">+</button>
-    </div>
+    </div> 
+ -->
+     <mat-slider 
+     *ngIf="song"
+    class="example-margin"
+    [disabled]="disabled"
+    [invert]="invert"
+    [max]="max"
+    [min]="min"
+    [step]="step"
+    [thumbLabel]="thumbLabel"
+    [(ngModel)]="song.volume"
+    [vertical]="vertical"
+    aria-labelledby="example-name-label">
+</mat-slider>  
+
+<mat-slider 
+*ngIf="song===undefined"
+[disabled]="disabled"
+[invert]="invert"
+[max]="max"
+[min]="min"
+[step]="step"
+[thumbLabel]="thumbLabel"
+[(ngModel)]="systemVolume"
+[vertical]="vertical">
+</mat-slider>
+ 
 
     <div *ngIf="song">
       <p>{{song.duration/60 | number:'2.0-0'}}:{{song.duration%60 | number:'2.0-0'}}</p>
