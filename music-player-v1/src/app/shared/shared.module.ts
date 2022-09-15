@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatSliderModule } from '@angular/material/slider';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {MatTabsModule} from '@angular/material/tabs';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatProgressBarModule,
     ScrollingModule,
     MatSliderModule,
-    DragDropModule
+    DragDropModule,
+    MatTabsModule
   ],
   exports: [
     HeaderComponent,

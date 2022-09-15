@@ -2,6 +2,7 @@ import { LoaderService } from './../../../loader/loader.service';
 import { SongService } from './../../song.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { FormControl } from '@angular/forms';
 interface Weight {
   value: number;
   viewValue: string;
@@ -115,5 +116,19 @@ export class MainComponent implements OnInit {
   }
 
   items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
+
+  
+  selected = new FormControl(0);
+  tabs = ['First', 'Second', 'Third'];
+  
+
+  addTab() {
+    this.tabs.push('New');
+      this.selected.setValue(this.tabs.length - 1);
+  }
+
+  removeTab() {
+    this.tabs.splice(this.selected.value, 1);
+  }
 
 }
