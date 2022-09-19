@@ -7,19 +7,18 @@
   height: 85%;
 }
 
-#title{
+.title{
   display: flex;
   align-items:flex-start; 
   justify-content: space-between;
 }
 
-#generate-button{
-  margin-top: 3px;
 
-}
  .btn-danger{
     background-color: #180605;
     font-size:small;
+    margin-top: 3px;
+    margin-right: 8px;
   }
 
 .deletebtn{
@@ -139,3 +138,16 @@
 #tab-group mat-tab-body {
   flex-grow: 1;
 }
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+  color:white;
+  }
+  
+  
+  ::ng-deep .mat-tab-list .mat-tab-labels {
+  color:white;
+  } 
+
+  ::ng-deep .mat-ink-bar {
+    background-color: var(--primary-color,#dc3545) !important;
+    }

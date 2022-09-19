@@ -18,8 +18,13 @@
     </div>
     <div *ngIf="song===undefined">00:00</div>
 
-    <div style="margin-top: 5px;">
+    <!-- <div style="margin-top: 5px;"> 
       <button  class="btn btn-danger" (click)="onGenerate(song)">Generate</button>
+    </div>
+    -->
+
+    <div class="next-song" *ngIf="song" >
+      <p></p>
     </div>
 
     <div style="margin-top: 5px; margin-left: 5px;">

@@ -3,9 +3,15 @@ import { SongService } from './../../song.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormControl } from '@angular/forms';
+
 interface Weight {
   value: number;
   viewValue: string;
+}
+
+interface Pair {
+  title: string;
+  weight: number;
 }
 
 @Component({
@@ -17,10 +23,13 @@ export class MainComponent implements OnInit {
 
   arrayFromSidebar:any
   currentlyPlaying:any
+  
 
   constructor( private songService:SongService, public loaderService:LoaderService) { }
 
   ngOnInit(): void {
+
+    sessionStorage.clear()
     
    this.songService.sendArray.subscribe(array=>{
      this.arrayFromSidebar=array
@@ -38,14 +47,12 @@ export class MainComponent implements OnInit {
 
   }
 
-
-
   public selectedWeight?:number
 
   weights: Weight[] = [
     {value: 1, viewValue: '1'},
-    {value: 5, viewValue: '5'},
-    {value: 10, viewValue: '10'},
+    {value: 2, viewValue: '2'},
+    {value: 3, viewValue: '3'},
   ]
 
   public isPlaying:boolean=false;
@@ -91,21 +98,21 @@ export class MainComponent implements OnInit {
     if(index!==-1){
       this.arrayFromSidebar.splice(index,1)
     }
+    sessionStorage.removeItem(song.title)
   }
 
   public onWeightChange(song:any){
+    sessionStorage.setItem(song.title,song.weight)
   }
 
 
- /* drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex);
-  }*/
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex)
+     
     } else {
-      /*transferArrayItem(
+     /* transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
@@ -115,16 +122,56 @@ export class MainComponent implements OnInit {
     }
   }
 
-  items = Array.from({length: 100000}).map((_, i) => `Item #${i}`);
-
   
   selected = new FormControl(0);
-  tabs = ['First', 'Second', 'Third'];
+  tabs = ['Queue 1'];
   
 
   addTab() {
-    this.tabs.push('New');
+
+    this.tabs.push('Queue '+(this.tabs.length+1));
       this.selected.setValue(this.tabs.length - 1);
+
+      let pairs: Pair[] = [ ]
+
+      
+        var keys = Object.keys(sessionStorage),
+        i = 0, key;
+
+    for (; key = keys[i]; i++) {
+      let calculatedWeight:number=0
+
+      
+      switch(sessionStorage.getItem(key)){
+        case '1':{ //0-1
+          calculatedWeight=Math.random()
+          break
+        }
+        case '2':{//1-2
+          calculatedWeight=Math.random()*(2-1)+1
+          break
+        }
+        case '3':{ //2-3
+          calculatedWeight=Math.random()*(3-2)+2
+          break
+        }
+        default: { //0-3
+          calculatedWeight=Math.random()*(3-0)+0
+          break
+        }
+      }
+
+        let tmp:Pair={title: key, weight: Math.round(calculatedWeight*100)/100}
+        pairs.push(tmp)
+    }
+    console.log(pairs)
+
+    let sorted = pairs.sort((a,b)=>(a.weight>b.weight)?-1:1)
+    console.log("sorted:")
+    console.log(sorted)
+
+   this.arrayFromSidebar=sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))
+
   }
 
   removeTab() {

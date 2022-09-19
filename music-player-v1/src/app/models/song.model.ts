@@ -1,3 +1,3 @@
-export interface Song{
+/*export interface Song{
     name:string;
-}
+}*/

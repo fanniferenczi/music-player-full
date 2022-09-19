@@ -1,4 +1,4 @@
-import { Song } from './../../../models/song.model';
+// import { Song } from './../../../models/song.model';
 import { Tile } from './../../../app.component';
 import { SongService } from './../../song.service';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';

@@ -1,7 +1,7 @@
 import { SonglibraryService } from '../../songlibrary.service';
 import { Component, OnInit } from '@angular/core';
 import { SongService } from '../../song.service';
-import { Song } from 'src/app/models/song.model';
+// import { Song } from 'src/app/models/song.model';
 import { FooterComponent } from '../footer/footer.component';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 @Component({
@@ -18,7 +18,6 @@ export class SidebarComponent implements OnInit {
     this.songService.sendIndexes.subscribe(array=>{
       this.ddIndexes=array
       this.ddAdd(this.ddIndexes[0],this.ddIndexes[1])
-
     })
   }
 
@@ -45,6 +44,7 @@ export class SidebarComponent implements OnInit {
           tmp.title=this.songs[sourceIndex]
          // this.addedSongs.push(tmp)
          this.addedSongs.splice(targetIndex,0,tmp)
+         sessionStorage.setItem(this.addedSongs[targetIndex].title,'null')
           this.songService.communicateArray(this.addedSongs)
         }
       )
@@ -60,7 +60,6 @@ export class SidebarComponent implements OnInit {
 
   public onAdd(audio:string){
    if(this.addedSongs.findIndex(x=>x.title===audio)===-1){
-    console.log("inside onAdd func") 
     
      this.getSong(audio)
     /*  this.libraryService.getSong(audio).subscribe(
@@ -96,6 +95,7 @@ export class SidebarComponent implements OnInit {
     let tmp=new Audio(this.path)
     tmp.title=title
     this.addedSongs.push(tmp)
+    sessionStorage.setItem(tmp.title, "null")
     this.songService.communicateArray(this.addedSongs)
   }
 
