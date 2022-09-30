@@ -18,6 +18,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
     SharedModule,
     HttpClientModule,
     DragDropModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    NgbModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS,useClass:InterceptorService,multi:true}

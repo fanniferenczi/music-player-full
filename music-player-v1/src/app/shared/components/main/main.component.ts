@@ -14,6 +14,12 @@ interface Pair {
   weight: number;
 }
 
+interface Tab
+  {
+    listName: string,
+    songs: any[]
+  }
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -29,10 +35,11 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void {
 
-    sessionStorage.clear()
+    localStorage.clear()
     
    this.songService.sendArray.subscribe(array=>{
      this.arrayFromSidebar=array
+     this.tab1.songs=this.arrayFromSidebar
    })
 
    this.songService.sendNext.subscribe(audio=>{
@@ -46,6 +53,7 @@ export class MainComponent implements OnInit {
    })
 
   }
+  tab1:Tab={listName:'Queue 1',songs:[]}
 
   public selectedWeight?:number
 
@@ -93,23 +101,26 @@ export class MainComponent implements OnInit {
     }
   }
 
-  onDelete(song:any){
-    const index: number=this.arrayFromSidebar.indexOf(song)
+  onDelete(song:any,tabSongs:any){
+    // const index: number=this.arrayFromSidebar.indexOf(song)
+    const index:number=tabSongs.indexOf(song)
     if(index!==-1){
-      this.arrayFromSidebar.splice(index,1)
+      // this.arrayFromSidebar.splice(index,1)
+      tabSongs.splice(index,1)
     }
-    sessionStorage.removeItem(song.title)
+    localStorage.removeItem(song.title)
   }
 
   public onWeightChange(song:any){
-    sessionStorage.setItem(song.title,song.weight)
+    localStorage.setItem(song.title,song.weight)
   }
 
 
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>,songs:any) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex)
+      moveItemInArray(songs,event.previousIndex,event.currentIndex)
+      // moveItemInArray(this.arrayFromSidebar, event.previousIndex, event.currentIndex)
      
     } else {
      /* transferArrayItem(
@@ -124,25 +135,26 @@ export class MainComponent implements OnInit {
 
   
   selected = new FormControl(0);
-  tabs = ['Queue 1'];
+  tabs = [this.tab1];
   
 
   addTab() {
 
-    this.tabs.push('Queue '+(this.tabs.length+1));
-      this.selected.setValue(this.tabs.length - 1);
+    // this.tabs.push('Queue '+(this.tabs.length+1));
+      
+    this.selected.setValue(this.tabs.length );
 
       let pairs: Pair[] = [ ]
 
       
-        var keys = Object.keys(sessionStorage),
+        var keys = Object.keys(localStorage),
         i = 0, key;
 
     for (; key = keys[i]; i++) {
       let calculatedWeight:number=0
 
       
-      switch(sessionStorage.getItem(key)){
+      switch(localStorage.getItem(key)){
         case '1':{ //0-1
           calculatedWeight=Math.random()
           break
@@ -170,12 +182,17 @@ export class MainComponent implements OnInit {
     console.log("sorted:")
     console.log(sorted)
 
-   this.arrayFromSidebar=sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))
+    let tab:Tab={listName:'Queue '+(this.tabs.length+1),songs:sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))}
+    this.tabs.push(tab)
+
+    // this.arrayFromSidebar=sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))
+  
 
   }
 
   removeTab() {
     this.tabs.splice(this.selected.value, 1);
   }
+
 
 }

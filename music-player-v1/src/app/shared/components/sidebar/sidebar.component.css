@@ -1,5 +1,8 @@
 :host{
-    padding: 20px;
+    padding-left: 15px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    padding-right: 5px;
     margin-top: 50px;
     background-color: #060a05;
     color: white;
@@ -92,7 +95,7 @@
   .example-viewport {
     height: 85%;
     width: 100%;
-    border: 1px solid black;
+    /* border: 1px solid black; */
   }
   
   .example-item {
@@ -104,3 +107,57 @@
     color: black; 
   } 
 
+
+  .sidebar-header{
+    display: flex;
+    align-items:flex-start; 
+    justify-content: space-between;
+  }
+
+  .btn-danger{
+    background-color: #180605;
+    font-size:small;
+    margin-top: 3px;
+    margin-right: 8px;
+  }
+
+  /* expansion panel */
+ 
+  .example-action-buttons {
+    padding-bottom: 20px;
+  }
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .example-headers-align .mat-form-field + .mat-form-field {
+    margin-left: 8px;
+
+  }
+
+
+
+  .mat-expansion-panel{
+    background-color: rgb(32,32,32);
+    margin-right: 5px;
+  }
+
+  .mat-expansion-panel-header-title {
+    color: white
+  }
+
+/*
+  .mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel-header.mat-expanded:hover {
+  background: rgb(32, 32, 32);
+  color:white;
+}
+.mat-expansion-panel-header{
+  background: rgb(32, 32, 32);
+  color:white;
+}
+.mat-expansion-panel-header:hover{
+  background: blue;
+}*/

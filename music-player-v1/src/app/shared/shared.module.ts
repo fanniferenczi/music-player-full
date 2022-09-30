@@ -11,6 +11,8 @@ import { ScrollingModule } from '@angular/cdk/scrolling';
 import { MatSliderModule } from '@angular/material/slider';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import {MatTabsModule} from '@angular/material/tabs';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -28,7 +30,9 @@ import {MatTabsModule} from '@angular/material/tabs';
     ScrollingModule,
     MatSliderModule,
     DragDropModule,
-    MatTabsModule
+    MatTabsModule,
+    MatExpansionModule,
+    MatSelectModule
   ],
   exports: [
     HeaderComponent,
