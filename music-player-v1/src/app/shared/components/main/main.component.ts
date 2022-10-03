@@ -29,6 +29,7 @@ export class MainComponent implements OnInit {
 
   arrayFromSidebar:any
   currentlyPlaying:any
+  tmp:any
   
 
   constructor( private songService:SongService, public loaderService:LoaderService) { }
@@ -38,8 +39,15 @@ export class MainComponent implements OnInit {
     localStorage.clear()
     
    this.songService.sendArray.subscribe(array=>{
-     this.arrayFromSidebar=array
-     this.tab1.songs=this.arrayFromSidebar
+     //this.arrayFromSidebar=array
+     this.tmp=array
+     //this.tab1.songs=this.arrayFromSidebar
+     //this.tabs.splice(this.selected.value, 1,);
+     this.tabs[this.selected.value].songs=this.tmp
+     
+   })
+   this.songService.sendAddedSong.subscribe(audio=>{
+    this.tabs[this.selected.value].songs.push(audio)
    })
 
    this.songService.sendNext.subscribe(audio=>{
@@ -65,6 +73,7 @@ export class MainComponent implements OnInit {
 
   public isPlaying:boolean=false;
   active:any;
+  queueCounter=1;
  
   play(song:InstanceType<typeof Audio>){
     this.songService.communicateSong(song)
@@ -112,7 +121,8 @@ export class MainComponent implements OnInit {
   }
 
   public onWeightChange(song:any){
-    localStorage.setItem(song.title,song.weight)
+    //localStorage.setItem(song.title,song.weight)
+
   }
 
 
@@ -138,15 +148,54 @@ export class MainComponent implements OnInit {
   tabs = [this.tab1];
   
 
+  generate(){
+    let activeTab=this.tabs[this.selected.value]
+    let pairs: Pair[] = [ ]
+    for(let i=0;i<activeTab.songs.length;i++){
+      let calculatedWeight:number=0
+      
+      switch(activeTab.songs[i].weight){
+        case '1':{ //0-1
+          calculatedWeight=Math.random()
+          break
+        }
+        case '2':{//1-2
+          calculatedWeight=Math.random()*(2-1)+1
+          break
+        }
+        case '3':{ //2-3
+          calculatedWeight=Math.random()*(3-2)+2
+          break
+        }
+        default: { //0-3
+          calculatedWeight=Math.random()*(3-0)+0
+          break
+        }
+      }
+
+        let tmp:Pair={title: activeTab.songs[i].title, weight: Math.round(calculatedWeight*100)/100}
+        pairs.push(tmp)
+    }
+    console.log(pairs)
+
+    let sorted = pairs.sort((a,b)=>(a.weight>b.weight)?-1:1)
+    console.log("sorted:")
+    console.log(sorted)
+
+    //let tab:Tab={listName:'Queue '+(this.tabs.length+1),songs:sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))}
+    let tab:Tab={listName:'Queue '+ ++this.queueCounter,songs:sorted.map(x=>this.tabs[this.selected.value].songs.find((item: { title: string; })=>item.title==x.title))}
+    
+    /*tab.songs.forEach(
+      (song) => song.weight=null
+    )*/
+    this.tabs.push(tab)
+    this.selected.setValue(this.tabs.length);
+  }
+
   addTab() {
-
-    // this.tabs.push('Queue '+(this.tabs.length+1));
-      
-    this.selected.setValue(this.tabs.length );
-
-      let pairs: Pair[] = [ ]
-
-      
+    // this.tabs.push('Queue '+(this.tabs.length+1));     
+        let pairs: Pair[] = [ ]
+     
         var keys = Object.keys(localStorage),
         i = 0, key;
 
@@ -182,12 +231,11 @@ export class MainComponent implements OnInit {
     console.log("sorted:")
     console.log(sorted)
 
-    let tab:Tab={listName:'Queue '+(this.tabs.length+1),songs:sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))}
+    //let tab:Tab={listName:'Queue '+(this.tabs.length+1),songs:sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))}
+    let tab:Tab={listName:'Queue '+(this.tabs.length+1),songs:sorted.map(x=>this.tabs[this.selected.value].songs.find((item: { title: string; })=>item.title==x.title))}
     this.tabs.push(tab)
-
+    this.selected.setValue(this.tabs.length);
     // this.arrayFromSidebar=sorted.map(x=>this.arrayFromSidebar.find((item: { title: string; })=>item.title==x.title))
-  
-
   }
 
   removeTab() {

@@ -83,17 +83,18 @@ export class SidebarComponent implements OnInit {
   public onAdd(audio:string){
    if(this.addedSongs.findIndex(x=>x.title===audio)===-1){
     
-     this.getSong(audio)
-    /*  this.libraryService.getSong(audio).subscribe(
+    // this.getSong(audio)
+      this.libraryService.getSong(audio).subscribe(
         response=>{
-          this.path=response*/
+          this.path=response
          // this.sendSong(song)
-          /*let tmp=new Audio(this.path)
+          let tmp=new Audio(this.path)
           tmp.title=audio
-          this.addedSongs.push(tmp)
-          this.songService.communicateArray(this.addedSongs)*/
-       // }
-     // )
+         this.songService.communicateAddedSong(tmp)
+          // this.addedSongs.push(tmp)
+         // this.songService.communicateArray(this.addedSongs)
+        }
+      )
     }
     else{
       alert(audio+" is already added!")
@@ -105,10 +106,6 @@ export class SidebarComponent implements OnInit {
       response=>{
         this.path=response
         this.sendSong(song)
-       /* let tmp=new Audio(this.path)
-        tmp.title=song
-        this.addedSongs.push(tmp)
-        this.songService.communicateArray(this.addedSongs)*/
       }
     )
   }

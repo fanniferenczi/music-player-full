@@ -11,7 +11,11 @@ export class SongService {
   sendBack=new Subject()
   sendIndexes=new Subject()
 
+  sendAddedSong=new Subject()
 
+  communicateAddedSong(audio:any){
+    this.sendAddedSong.next(audio)
+  }
   constructor() { }
 
   communicateArray(array:any){
