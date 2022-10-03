@@ -27,12 +27,10 @@ export class SidebarComponent implements OnInit {
       this.ddIndexes=array
       this.ddAdd(this.ddIndexes[0],this.ddIndexes[1])
     })
-   
   }
 
   
- playlists:Playlist[]=[]
-
+  playlists:Playlist[]=[]
   songs:string[]=[]
   path:string=''
   public addedSongs:InstanceType<typeof Audio>[]=[]
@@ -46,28 +44,20 @@ export class SidebarComponent implements OnInit {
         this.playlists.push(initialPlaylist)
       }
     );
-    
   }
-  
  
   dropPlaylist(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.playlists, event.previousIndex, event.currentIndex);
   }
-
-
 
   public ddAdd(sourceIndex:number,targetIndex:number){
     if(this.addedSongs.findIndex(x=>x.title===this.songs[sourceIndex])===-1){
       this.libraryService.getSong(this.songs[sourceIndex]).subscribe(
         response=>{
           this.path=response
-          //this.sendSong(song)
           let tmp=new Audio(this.path)
           tmp.title=this.songs[sourceIndex]
-         // this.addedSongs.push(tmp)
-         this.addedSongs.splice(targetIndex,0,tmp)
-         localStorage.setItem(this.addedSongs[targetIndex].title,'null')
-          this.songService.communicateArray(this.addedSongs)
+         this.songService.communicateSongAndIndex(tmp,targetIndex)
         }
       )
     }
@@ -82,17 +72,12 @@ export class SidebarComponent implements OnInit {
 
   public onAdd(audio:string){
    if(this.addedSongs.findIndex(x=>x.title===audio)===-1){
-    
-    // this.getSong(audio)
       this.libraryService.getSong(audio).subscribe(
         response=>{
           this.path=response
-         // this.sendSong(song)
           let tmp=new Audio(this.path)
           tmp.title=audio
          this.songService.communicateAddedSong(tmp)
-          // this.addedSongs.push(tmp)
-         // this.songService.communicateArray(this.addedSongs)
         }
       )
     }
@@ -100,41 +85,7 @@ export class SidebarComponent implements OnInit {
       alert(audio+" is already added!")
     }
   }
-
-  getSong(song:string){
-    this.libraryService.getSong(song).subscribe(
-      response=>{
-        this.path=response
-        this.sendSong(song)
-      }
-    )
-  }
-
-
-  sendSong(title:string){
-    let tmp=new Audio(this.path)
-    tmp.title=title
-    this.addedSongs.push(tmp)
-    localStorage.setItem(tmp.title, "null")
-    this.songService.communicateArray(this.addedSongs)
-  }
-
- /* drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.songs, event.previousIndex, event.currentIndex);
-  }*/
-
- /* drop(event: CdkDragDrop<string[]>) {
-    if (event.previousContainer === event.container) {
-      moveItemInArray(this.songs, event.previousIndex, event.currentIndex);
-    } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
-    }
-  }*/
+  
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.songs, event.previousIndex, event.currentIndex);
   }
@@ -143,7 +94,6 @@ export class SidebarComponent implements OnInit {
     let tmp :string[]=[]
     let newPlaylist:Playlist={title:"new playlist",items:tmp}
     this.playlists.unshift(newPlaylist)
-    // this.playlists.push(playlist)
   }
 
 }

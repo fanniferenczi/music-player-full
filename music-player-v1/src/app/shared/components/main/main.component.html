@@ -2,7 +2,7 @@
   <div class="title">
     <div><h2>Queues</h2></div>
     <div>
-      <button  class="btn btn-danger" (click)="generate()" >Generate</button>
+      <button class="btn btn-danger" (click)="generate()" >Generate</button>
       <button class="btn btn-danger"  [disabled]="tabs.length === 1" (click)="removeTab()" >Close this tab</button>
     </div>
   </div>
@@ -18,14 +18,14 @@
         <div id="list-2"
               cdkDropList  
               class="example-list" 
-              (cdkDropListDropped)="drop($event,tab.songs)"
+              (cdkDropListDropped)="drop($event,tab.songs,tab)"
               cdkDropListConnectedTo="list-1"> 
-            <div   class="example-box" *ngFor="let song of tab.songs; let indexOfelement=index;" (dblclick)="play(song)" cdkDrag>
+            <div class="example-box" *ngFor="let song of tab.songs; let indexOfelement=index;" (dblclick)="play(song,tab)" cdkDrag>
               <div class="container-fluid" > 
                 <div class="row" >
                   <div class="col-1">{{indexOfelement+1}}</div>
                   <div class="col-7">
-                    <span [class.active]="song===active">{{song.title}}</span>
+                    <span [class.active]="song.title===tab.activeSong.title && tab===playingTab">{{song.title}}</span>
                   </div>
                   <div class="col-3">
                    <select  [(ngModel)]="song.weight" (change)="onWeightChange(song)" style="color: black;" >

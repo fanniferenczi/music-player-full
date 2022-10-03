@@ -28,17 +28,15 @@ export class FooterComponent implements OnInit, AfterViewInit {
      this.play(this.song)
      this.song.ontimeupdate=function(){}
     })
+    this.songService.sendNextSongTitle.subscribe(songTitle=>{
+        this.nextSongTitle=songTitle
+    })
   }
 
-  autoTicks = false;
-  disabled = false;
-  invert = false;
+
   max = 1;
   min = 0;
-  showTicks = false;
   step = 0.01;
-  thumbLabel = false;
-  // value = 0;
   vertical = false;
   tickInterval = 0.01;
 
@@ -46,6 +44,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
  song:any
  isPlaying=false
  time:any
+ nextSongTitle:any=''
  
  play(song:any){
   song.addEventListener('ended',()=>{this.onNextSong(song)})

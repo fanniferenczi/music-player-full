@@ -5,22 +5,18 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SongService {
-  sendArray = new Subject()
   sendAudio=new Subject()
   sendNext=new Subject()
   sendBack=new Subject()
   sendIndexes=new Subject()
-
   sendAddedSong=new Subject()
+  sendSongAndIndex=new Subject()
+  sendNextSongTitle=new Subject()
 
   communicateAddedSong(audio:any){
     this.sendAddedSong.next(audio)
   }
   constructor() { }
-
-  communicateArray(array:any){
-    this.sendArray.next(array)
-  }
 
   communicateSong(audio:any){
     this.sendAudio.next(audio)
@@ -35,5 +31,14 @@ export class SongService {
   communicateIndexes(source:number,target:number){
     let indexes=[source,target]
     this.sendIndexes.next(indexes)
+  }
+
+  communicateSongAndIndex(audio:any,index:number){
+    let songAndIndex=[audio,index];
+    this.sendSongAndIndex.next(songAndIndex)
+  }
+
+  communicateNextSongTitle(sonsTitle:string){
+    this.sendNextSongTitle.next(sonsTitle)
   }
 }
