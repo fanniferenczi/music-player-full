@@ -148,6 +148,11 @@ color:#dc3545;
 .add-button:hover{
   color:#dc3545;
 }
+.add-all-button{
+  font-size: small;
+  margin-right: 10px;
+  color:#dc3545;
+}
 
   /* expansion panel */
  

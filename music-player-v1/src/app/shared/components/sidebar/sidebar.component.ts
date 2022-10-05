@@ -1,7 +1,6 @@
 import { SonglibraryService } from '../../songlibrary.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { SongService } from '../../song.service';
-// import { Song } from 'src/app/models/song.model';
 import { FooterComponent } from '../footer/footer.component';
 import { CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
@@ -10,6 +9,7 @@ interface Playlist {
   title: string
   items: string[]
   id:number
+  panelOpenState:boolean 
 }
 
 @Component({
@@ -24,7 +24,8 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSongs()
-    
+    this.getUserPlaylists()
+
     this.songService.sendIndexes.subscribe(array=>{
       this.ddIndexes=array
       this.ddAdd(this.ddIndexes[0],this.ddIndexes[1])
@@ -39,25 +40,33 @@ export class SidebarComponent implements OnInit {
   ddIndexes:any
   idCounter:number=0
 
+
   getAllSongs(){
     this.libraryService.getAllSong().subscribe(
       response=>{
         this.songs=response
-        let initialPlaylist:Playlist={title:'Available Songs', items:this.songs,id:++this.idCounter}
+        let initialPlaylist:Playlist={title:'Available Songs', items:this.songs,id:++this.idCounter,  panelOpenState: false}
         this.playlists.push(initialPlaylist)
-        let testPlaylist:Playlist={title:'Playlist1',items:[initialPlaylist.items[0],initialPlaylist.items[1]],id:++this.idCounter}
-        this.playlists.unshift(testPlaylist)
       }
     );
+  }
+
+  getUserPlaylists(){
+    let keys=Object.keys(localStorage)
+    for(let i=0;i<keys.length;i++){
+      if(!keys[i].startsWith("Queue")){
+        let data= JSON.parse(localStorage.getItem(keys[i])|| '{}')
+        let loadedPlaylist:Playlist={title:keys[i],items:data,id:this.idCounter,panelOpenState: false}
+        this.playlists.unshift(loadedPlaylist)
+        console.log(this.playlists)
+      }
+      
+    }
   }
  
   dropPlaylist(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.playlists, event.previousIndex, event.currentIndex);
-  }
-
-
-
- 
+  } 
 
  onAdd(audio:string){
    if(this.addedSongs.findIndex(x=>x.title===audio)===-1){
@@ -77,7 +86,9 @@ export class SidebarComponent implements OnInit {
 
 
   getConnectedList(): any[] {
-    return this.playlists.map(x => `${x.id}`);
+    let connected=this.playlists.map(x => `${x.id}`)
+    connected.push('list-2')
+    return connected
   }
 
   ddAdd(sourceIndex:number,targetIndex:number){
@@ -97,35 +108,22 @@ export class SidebarComponent implements OnInit {
   }
 
 
-  drop(event: CdkDragDrop<string[]>) {
+  drop(event: CdkDragDrop<string[]>,playlist:any) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-    //  console.log(event.previousContainer)
       let targetArray=event.container.data
-      console.log(targetArray)
       let song=event.previousContainer.data[event.previousIndex]
-      console.log(song)
       if(targetArray.indexOf(song)===-1){
-        copyArrayItem (event.previousContainer.data,
-                       event.container.data,
-                       event.previousIndex,
-                       event.currentIndex);
+        copyArrayItem (event.previousContainer.data, event.container.data,event.previousIndex, event.currentIndex)
+        localStorage.setItem(playlist.title,JSON.stringify(playlist.items))
       }
+      
       else{
         alert(song + ' is already added to this playlist!')
-      } 
-
-     
+      }      
     }
   }
-
-
- /* addPlaylist(){
-    let tmp :string[]=[]
-    let newPlaylist:Playlist={title:"new playlist",items:tmp,id:++this.idCounter}
-    this.playlists.unshift(newPlaylist)
-  } */
 
   deletePlaylist(playlist:any){
     if(confirm("Are you sure to delete "+playlist.title+"?")) {
@@ -133,9 +131,8 @@ export class SidebarComponent implements OnInit {
       if(index!==-1){
         this.playlists.splice(index,1)
       }
+      localStorage.removeItem(playlist.title)
     }
-
-    
   }
 
   deleteSong(song:any,playlist:any){
@@ -143,6 +140,7 @@ export class SidebarComponent implements OnInit {
     if(index!==-1){
       playlist.items.splice(index,1)
     }
+    localStorage.setItem(playlist.title,JSON.stringify(playlist.items))
   }
  
   title: string=''
@@ -155,19 +153,25 @@ export class SidebarComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result!==undefined ){
-        if(result==='Available Songs'){
-          alert("You can't give this name to your playlist!")
+        if(this.playlists.findIndex(x=>x.title===result)===-1){
+          let tmp :string[]=[]
+          let newPlaylist:Playlist={title:result,items:tmp,id:++this.idCounter,panelOpenState: false}
+          this.playlists.unshift(newPlaylist)
+          localStorage.setItem(newPlaylist.title,JSON.stringify(newPlaylist.items))
         }
         else{
-          let tmp :string[]=[]
-          let newPlaylist:Playlist={title:result,items:tmp,id:++this.idCounter}
-          this.playlists.unshift(newPlaylist)
-        }
-        
+          alert(result+" playlist name is already exists!")
+        }        
       }
     });
   }
 
+  addAll(playlist:any){
+    for(let i=0;i<playlist.items.length;i++){
+      this.onAdd(playlist.items[i])
+    }
+    
+  }
 }
 
 export interface DialogData {

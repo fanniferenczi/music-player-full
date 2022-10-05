@@ -34,6 +34,11 @@ export class MainComponent implements OnInit {
 
   ngOnInit(): void { 
 
+    this.tabs.push(this.tab1)
+   //localStorage.setItem(this.tab1.listName,JSON.stringify(this.tab1.songs))
+   
+   this.getUserQueus()
+
     this.songService.sendSongAndIndex.subscribe(array =>{
       this.songAndIndex=array
       if(this.tabs[this.selected.value].songs.findIndex(x=>x.title===this.songAndIndex[0].title)===-1){
@@ -49,6 +54,8 @@ export class MainComponent implements OnInit {
     if(this.tabs[this.selected.value].songs.findIndex(x=>x.title===addedSong.title)===-1){
       this.tabs[this.selected.value].songs.push(audio)
 
+      localStorage.setItem(this.tabs[this.selected.value].listName,JSON.stringify(this.tabs[this.selected.value].songs))
+
       if(this.tabs[this.selected.value].activeSong.title!==undefined){
         let activeIndex=this.tabs[this.selected.value].songs.findIndex(x=>x.title===this.tabs[this.selected.value].activeSong.title)
         if(activeIndex==this.tabs[this.selected.value].songs.length-1){
@@ -57,11 +64,7 @@ export class MainComponent implements OnInit {
         else{
           this.songService.communicateNextSongTitle(this.tabs[this.selected.value].songs[activeIndex+1].title)  
         }
-      }
-      
-
-
-
+      }   
     }
     else{
       alert(addedSong.title+" is already added to "+this.tabs[this.selected.value].listName+"!")
@@ -78,7 +81,9 @@ export class MainComponent implements OnInit {
      this.playPrevSong(this.currentlyPlaying,this.playingTab)
    })
 
+   
   }
+
   songAndIndex:any
   arrayFromSidebar:any
   currentlyPlaying:any
@@ -96,10 +101,21 @@ export class MainComponent implements OnInit {
   public isPlaying:boolean=false;
   queueCounter=1;
   selected = new FormControl(0);
-  tabs = [this.tab1];
+  tabs:Tab[] = [];
 
   playingTab:Tab=this.tab1
 
+  getUserQueus(){
+    let keys=Object.keys(localStorage)
+    for(let i=0;i<keys.length;i++){
+      if(keys[i].startsWith("Queue")){
+        let data= JSON.parse(localStorage.getItem(keys[i])|| '{}')
+        let loadedTab:Tab={listName:keys[i],songs:data,activeSong:''}
+        this.tabs.push(loadedTab)
+      }
+     
+    }
+  }
 
  
   play(song:InstanceType<typeof Audio>,tab:Tab){
@@ -213,9 +229,14 @@ export class MainComponent implements OnInit {
    
     this.tabs.push(tab)
     this.selected.setValue(this.tabs.length);
+
+    localStorage.setItem(tab.listName,JSON.stringify(tab.songs))
   }
+  
   removeTab() {
+    localStorage.removeItem(this.tabs[this.selected.value].listName)
     this.tabs.splice(this.selected.value, 1);
+    
   }
 
 }
