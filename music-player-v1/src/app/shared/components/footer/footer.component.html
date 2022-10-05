@@ -12,51 +12,64 @@
     </div>
   </div>
 
+
   <div class="navigation">
-    <div *ngIf="song">
-      <p>{{song.currentTime/60 | number:'2.0-0'}}:{{song.currentTime%60 | number:'2.0-0'}}</p>
+    <div class="col-sm-1 start"> 
+      <div *ngIf="song">
+        <p>{{song.currentTime/60 | number:'2.0-0'}}:{{song.currentTime%60 | number:'2.0-0'}}</p>
+      </div>
+      <div *ngIf="song===undefined">00:00</div> 
     </div>
-    <div *ngIf="song===undefined">00:00</div>
 
-    <div>
-      <p>Next: {{nextSongTitle}}</p>
+    <div  class="col-sm-4 next">  
+      <div>
+        <p>Next: {{nextSongTitle}}</p>
+      </div>
     </div>
- 
-    <div style="margin-top: 5px; margin-left: 5px;">
-      <button class="btn btn-danger" (click)="onBackSong(song)">Back</button>
-      <button class="btn btn-danger play_pause" (click)="play(song)">
-        <div *ngIf="song===undefined || !isPlaying">
-           Play
-        </div>
-        <div *ngIf="isPlaying">
-          Pause
-        </div>
-      </button>
-      <button class="btn btn-danger" (click)="onNextSong(song)">Next</button>
-    </div>
-  
-    <mat-slider 
-    *ngIf="song"
-    class="example-margin"
-    [max]="max"
-    [min]="min"
-    [step]="step"
-    [(ngModel)]="song.volume"
-    aria-labelledby="example-name-label">
-</mat-slider>   
 
-  <mat-slider 
-  *ngIf="song===undefined"
-  [max]="max"
-  [min]="min"
-  [step]="step"
-  [(ngModel)]="systemVolume">
-  </mat-slider>
- 
-    <div *ngIf="song">
-      <p>{{song.duration/60 | number:'2.0-0'}}:{{song.duration%60 | number:'2.0-0'}}</p>
+    <div  class="col-sm-2 nav-buttons"> 
+      <div style="margin-top: 5px; ">
+        <button class="btn btn-danger" (click)="onBackSong(song)">Back</button>
+        <button class="btn btn-danger play_pause" (click)="play(song)">
+          <div *ngIf="song===undefined || !isPlaying">
+             Play
+          </div>
+          <div *ngIf="isPlaying">
+            Pause
+          </div>
+        </button>
+        <button class="btn btn-danger" (click)="onNextSong(song)">Next</button>
+      </div>
     </div>
-    <div *ngIf="song===undefined">00:00</div>
+
+    <div  class="col-sm-4 volume-space"> 
+         <mat-slider  
+        *ngIf="song"
+        class="example-margin"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [(ngModel)]="song.volume"
+        aria-labelledby="example-name-label">
+      </mat-slider>   
+
+      <mat-slider 
+        *ngIf="song===undefined"
+        [max]="max"
+        [min]="min"
+        [step]="step"
+        [(ngModel)]="systemVolume">
+      </mat-slider> 
     
+    </div>
+
+    <div  class="col-sm-1 end">
+      <div *ngIf="song">
+        <p>{{song.duration/60 | number:'2.0-0'}}:{{song.duration%60 | number:'2.0-0'}}</p>
+      </div>
+      <div *ngIf="song===undefined">00:00</div>      
+    </div>
+
   </div>
+
 </footer>

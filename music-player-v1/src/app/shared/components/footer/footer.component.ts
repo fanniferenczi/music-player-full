@@ -34,13 +34,13 @@ export class FooterComponent implements OnInit, AfterViewInit {
   }
 
 
-  max = 1;
+  max = 0.8;
   min = 0;
   step = 0.01;
   vertical = false;
   tickInterval = 0.01;
 
- systemVolume=0.5
+ systemVolume=0.4
  song:any
  isPlaying=false
  time:any
@@ -81,22 +81,7 @@ export class FooterComponent implements OnInit, AfterViewInit {
   this.songService.communicateBack(song)
  }
 
- onVolumeUp(song:any){
-  if(song.volume<0.9){
-     song.volume+=0.1
-    }
-  
- }
 
- onVolumeDown(song:any){
-  if(song.volume>0.1){
-    song.volume-=0.1
-  }
- }
-
- onGenerate(song:any){
-    
- }
 
 }
  

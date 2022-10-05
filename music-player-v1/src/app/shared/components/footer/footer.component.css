@@ -8,9 +8,31 @@ footer{
 }
 
   .navigation{
-    display: flex;
-    justify-content: space-between;
+    /* display: flex; */
+    /* justify-content: space-between; */
     color: white;
+    margin-top: 3px;
+  }
+  .start{
+    display: flex;
+    justify-content: start;
+  }
+  .next{
+    display: flex;
+    justify-content: center;
+    font-size: smaller;
+  }
+  .nav-buttons{
+    display: flex;
+    justify-content: center;
+  }
+  .volume-space{
+    display: flex;
+    justify-content: center;
+  }
+  .end{
+    display: flex;
+    justify-content: end;
   }
   
   .play_pause{
@@ -56,6 +78,9 @@ footer{
     top: 18px;
     background-color: white;
   }
+  
+ 
+
 
   /*
   ::ng-deep .mat-slider.mat-slider-horizontal .mat-slider-track-wrapper {

@@ -28,6 +28,7 @@ interface Tab
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
+  
 
   constructor( private songService:SongService, public loaderService:LoaderService) { }
 
@@ -39,7 +40,7 @@ export class MainComponent implements OnInit {
           this.tabs[this.selected.value].songs.splice(this.songAndIndex[1],0,this.songAndIndex[0])
        }
       else{
-        alert(this.songAndIndex[0]+" is already added!")
+        alert(this.songAndIndex[0].title+" is already added!")
       }
     })
 
@@ -47,9 +48,23 @@ export class MainComponent implements OnInit {
     let addedSong:any=audio
     if(this.tabs[this.selected.value].songs.findIndex(x=>x.title===addedSong.title)===-1){
       this.tabs[this.selected.value].songs.push(audio)
+
+      if(this.tabs[this.selected.value].activeSong.title!==undefined){
+        let activeIndex=this.tabs[this.selected.value].songs.findIndex(x=>x.title===this.tabs[this.selected.value].activeSong.title)
+        if(activeIndex==this.tabs[this.selected.value].songs.length-1){
+          this.songService.communicateNextSongTitle(this.tabs[this.selected.value].songs[0].title)
+        }
+        else{
+          this.songService.communicateNextSongTitle(this.tabs[this.selected.value].songs[activeIndex+1].title)  
+        }
+      }
+      
+
+
+
     }
     else{
-      alert(addedSong.title+" is already added!")
+      alert(addedSong.title+" is already added to "+this.tabs[this.selected.value].listName+"!")
     }
    })
 
@@ -67,7 +82,6 @@ export class MainComponent implements OnInit {
   songAndIndex:any
   arrayFromSidebar:any
   currentlyPlaying:any
-  tmp:any
   
   tab1:Tab={listName:'Queue 1',songs:[],activeSong:''}
 
@@ -85,6 +99,8 @@ export class MainComponent implements OnInit {
   tabs = [this.tab1];
 
   playingTab:Tab=this.tab1
+
+
  
   play(song:InstanceType<typeof Audio>,tab:Tab){
     this.songService.communicateSong(song)
@@ -135,7 +151,7 @@ export class MainComponent implements OnInit {
     if(index!==-1){
       tabSongs.splice(index,1)
     }
-    localStorage.removeItem(song.title)
+    
   }
 
   public onWeightChange(song:any){
@@ -147,13 +163,16 @@ export class MainComponent implements OnInit {
     } else {
       this.songService.communicateIndexes(event.previousIndex,event.currentIndex)
     }
-    let activeIndex=tab.songs.findIndex(x=>x.title===tab.activeSong.title)
-    if(activeIndex==tab.songs.length-1){
-      this.songService.communicateNextSongTitle(tab.songs[0].title)
+    if(tab.activeSong.title!==undefined){
+      let activeIndex=tab.songs.findIndex(x=>x.title===tab.activeSong.title)
+      if(activeIndex==tab.songs.length-1){
+        this.songService.communicateNextSongTitle(tab.songs[0].title)
+      }
+      else{
+        this.songService.communicateNextSongTitle(tab.songs[activeIndex+1].title)  
+      }
     }
-    else{
-      this.songService.communicateNextSongTitle(tab.songs[activeIndex+1].title)  
-    }    
+       
   }
 
   generate(){

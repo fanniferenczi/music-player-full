@@ -121,6 +121,34 @@
     margin-right: 8px;
   }
 
+  .deletebtn{
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    height: 20px;
+}
+
+.deletebtn:hover{
+    color: #dc3545;
+}
+.sidebar-list{
+  display: flex;
+  align-items:flex-start; 
+  justify-content: space-between;
+}
+.x-delete:hover{
+color:#dc3545;
+}
+.x-delete{
+  color:white;
+}
+.add-button:hover{
+  color:#dc3545;
+}
+
   /* expansion panel */
  
   .example-action-buttons {

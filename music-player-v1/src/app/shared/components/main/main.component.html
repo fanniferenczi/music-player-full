@@ -19,7 +19,7 @@
               cdkDropList  
               class="example-list" 
               (cdkDropListDropped)="drop($event,tab.songs,tab)"
-              cdkDropListConnectedTo="list-1"> 
+             > 
             <div class="example-box" *ngFor="let song of tab.songs; let indexOfelement=index;" (dblclick)="play(song,tab)" cdkDrag>
               <div class="container-fluid" > 
                 <div class="row" >
@@ -44,7 +44,7 @@
                 </div>
               </div> 
             </div>
-        </div>         
+        </div>        
      </cdk-virtual-scroll-viewport>
     </div>
   </mat-tab>
