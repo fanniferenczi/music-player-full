@@ -111,6 +111,7 @@ export class MainComponent implements OnInit {
       if(keys[i].startsWith("Queue")){
         let data= JSON.parse(localStorage.getItem(keys[i])|| '{}')
         let loadedTab:Tab={listName:keys[i],songs:data,activeSong:''}
+        debugger;
         this.tabs.push(loadedTab)
       }
      
@@ -229,7 +230,7 @@ export class MainComponent implements OnInit {
    
     this.tabs.push(tab)
     this.selected.setValue(this.tabs.length);
-
+    debugger;
     localStorage.setItem(tab.listName,JSON.stringify(tab.songs))
   }
   
