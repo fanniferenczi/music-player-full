@@ -1,9 +1,10 @@
+import { SonglibraryService } from './../../songlibrary.service';
 import { Tile } from './../../../app.component';
 import { LoaderService } from './../../../loader/loader.service';
 import { SongService } from './../../song.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 interface Weight {
   value: number;
@@ -30,32 +31,42 @@ interface Tab
 export class MainComponent implements OnInit {
   
 
-  constructor( private songService:SongService, public loaderService:LoaderService) { }
+  constructor( private songService:SongService, public loaderService:LoaderService, private libraryService:SonglibraryService) { }
 
   ngOnInit(): void { 
 
-    this.tabs.push(this.tab1)
-   //localStorage.setItem(this.tab1.listName,JSON.stringify(this.tab1.songs))
+     // this.tabs.push(this.tab1)
+    // localStorage.setItem(this.tab1.listName,JSON.stringify([]))
    
-   this.getUserQueus()
+     this.getUserQueus()
 
-    this.songService.sendSongAndIndex.subscribe(array =>{
-      this.songAndIndex=array
-      if(this.tabs[this.selected.value].songs.findIndex(x=>x.title===this.songAndIndex[0].title)===-1){
-          this.tabs[this.selected.value].songs.splice(this.songAndIndex[1],0,this.songAndIndex[0])
-       }
-      else{
-        alert(this.songAndIndex[0].title+" is already added!")
-      }
-    })
+    // this.songService.sendSongAndIndex.subscribe(array =>{
+    //   this.songAndIndex=array
+    //   if(this.tabs[this.selected.value].songs.findIndex(x=>x.title===this.songAndIndex[0].title)===-1){
+    //       this.tabs[this.selected.value].songs.splice(this.songAndIndex[1],0,this.songAndIndex[0])
+    //    }
+    //   else{
+    //     alert(this.songAndIndex[0].title+" is already added!")
+    //   }
+    // })
 
    this.songService.sendAddedSong.subscribe(audio=>{
     let addedSong:any=audio
     if(this.tabs[this.selected.value].songs.findIndex(x=>x.title===addedSong.title)===-1){
       this.tabs[this.selected.value].songs.push(audio)
 
-      localStorage.setItem(this.tabs[this.selected.value].listName,JSON.stringify(this.tabs[this.selected.value].songs))
+     
 
+          let titles:string[]=[]
+
+          for(let i=0;i<this.tabs[this.selected.value].songs.length;i++){
+            titles.push(this.tabs[this.selected.value].songs[i].title)
+          }
+
+        localStorage.setItem(this.tabs[this.selected.value].listName,JSON.stringify(titles))
+
+
+      
       if(this.tabs[this.selected.value].activeSong.title!==undefined){
         let activeIndex=this.tabs[this.selected.value].songs.findIndex(x=>x.title===this.tabs[this.selected.value].activeSong.title)
         if(activeIndex==this.tabs[this.selected.value].songs.length-1){
@@ -100,22 +111,43 @@ export class MainComponent implements OnInit {
 
   public isPlaying:boolean=false;
   queueCounter=1;
-  selected = new FormControl(0);
+  selected = new UntypedFormControl(0);
   tabs:Tab[] = [];
+  listNumbers:number[]=[1]
+
 
   playingTab:Tab=this.tab1
 
-  getUserQueus(){
+  getUserQueus(){  
     let keys=Object.keys(localStorage)
     for(let i=0;i<keys.length;i++){
       if(keys[i].startsWith("Queue")){
-        let data= JSON.parse(localStorage.getItem(keys[i])|| '{}')
-        let loadedTab:Tab={listName:keys[i],songs:data,activeSong:''}
-        debugger;
-        this.tabs.push(loadedTab)
-      }
-     
+        let songTitles= JSON.parse(localStorage.getItem(keys[i])|| '{}')
+        let loadedSongs:InstanceType<typeof Audio>[]=[]
+        for(let i=0;i<songTitles.length;i++){
+          this.libraryService.getSong(songTitles[i]).subscribe(
+            response=>{
+              let path=response
+              let tmp=new Audio(path)
+              tmp.title=songTitles[i]
+              loadedSongs.push(tmp);
+            }
+          )
+        }
+        
+        let loadedTab:Tab={listName:keys[i],songs:loadedSongs,activeSong:''}     
+        this.tabs.push(loadedTab) 
+
+        let listName:string[]=keys[i].split(" ")
+        this.listNumbers.push(+listName[1])
+
+        
+      }     
     }
+    this.tabs.sort( (a,b)=>a.listName > b.listName ? 1: -1 )
+    if(this.tabs.findIndex( (tab)=> tab.listName=='Queue 1') <0){
+      this.tabs.unshift(this.tab1)
+     }
   }
 
  
@@ -189,6 +221,7 @@ export class MainComponent implements OnInit {
         this.songService.communicateNextSongTitle(tab.songs[activeIndex+1].title)  
       }
     }
+    //itt kéne törölni,majd újra feltölteni a localstorageba (így remélhetőleg elmenti a sorrendet)
        
   }
 
@@ -220,22 +253,36 @@ export class MainComponent implements OnInit {
         let tmp:Pair={title: activeTab.songs[i].title, weight: Math.round(calculatedWeight*100)/100}
         pairs.push(tmp)
     }
-    console.log(pairs)
+   
 
     let sorted = pairs.sort((a,b)=>(a.weight>b.weight)?-1:1)
-    console.log("sorted:")
-    console.log(sorted)
 
-    let tab:Tab={listName:'Queue '+ ++this.queueCounter,songs:sorted.map(x=>this.tabs[this.selected.value].songs.find((item: { title: string; })=>item.title==x.title)),activeSong:''}
+    let max = this.listNumbers.reduce((a, b) => Math.max(a, b));
+    this.listNumbers.push(++max)
+
+    let tab:Tab={listName:'Queue '+  max,songs:sorted.map(x=>this.tabs[this.selected.value].songs.find((item: { title: string; })=>item.title==x.title)),activeSong:''}
    
     this.tabs.push(tab)
     this.selected.setValue(this.tabs.length);
-    debugger;
-    localStorage.setItem(tab.listName,JSON.stringify(tab.songs))
+    let titles:string[]=[]
+
+    for(let i=0;i<tab.songs.length;i++){
+      titles.push(tab.songs[i].title)
+    }
+
+     localStorage.setItem(tab.listName,JSON.stringify(titles))
+    
   }
+
+ 
+
   
   removeTab() {
     localStorage.removeItem(this.tabs[this.selected.value].listName)
+    let listname=this.tabs[this.selected.value].listName.split(" ")
+    if(this.listNumbers.indexOf(+listname[1]) >-1){
+      this.listNumbers.splice(this.listNumbers.indexOf(+listname[1]),1)
+    }
     this.tabs.splice(this.selected.value, 1);
     
   }

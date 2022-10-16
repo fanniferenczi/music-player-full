@@ -126,7 +126,7 @@ export class SidebarComponent implements OnInit {
   }
 
   deletePlaylist(playlist:any){
-    if(confirm("Are you sure to delete "+playlist.title+"?")) {
+    if(confirm("Are you sure you want to delete "+playlist.title+"?")) {
       let index=this.playlists.indexOf(playlist)
       if(index!==-1){
         this.playlists.splice(index,1)
@@ -160,7 +160,7 @@ export class SidebarComponent implements OnInit {
           localStorage.setItem(newPlaylist.title,JSON.stringify(newPlaylist.items))
         }
         else{
-          alert(result+" playlist name is already exists!")
+          alert(result+" playlist is already exists!")
         }        
       }
     });

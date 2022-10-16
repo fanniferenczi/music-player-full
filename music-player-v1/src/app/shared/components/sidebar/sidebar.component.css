@@ -32,6 +32,7 @@
     align-items: center;
     font-size:medium;
     color: white;
+    border-radius: 5px;
 }
 
 
@@ -119,6 +120,7 @@
     font-size:small;
     margin-top: 3px;
     margin-right: 8px;
+    border-radius: 5px;
   }
 
   .deletebtn{
@@ -169,8 +171,6 @@ color:#dc3545;
     margin-left: 8px;
 
   }
-
-
 
   .mat-expansion-panel{
     background-color: rgb(32,32,32);

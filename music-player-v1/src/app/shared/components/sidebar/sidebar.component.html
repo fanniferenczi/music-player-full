@@ -3,7 +3,7 @@
     <button at-raised-button class="btn btn-danger" (click)="openDialog()" >New Playlist</button>
   </div>
     
- <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport"> 
+ <ng-scrollbar style="height: 720px" class="example-viewport"> 
 
   <mat-accordion [multi]="true" cdkDropList 
   (cdkDropListDropped)="dropPlaylist($event)" >
@@ -11,7 +11,7 @@
     cdkDropListGroup class="example-container" 
     *ngFor="let playlist of playlists;" 
     cdkDrag [cdkDragData]="playlist"
-    (opened)="playlist.panelOpenState = true"
+    (opened)="playlist.panelOpenState = true" 
     (closed)="playlist.panelOpenState = false">
         <mat-expansion-panel-header>
           <mat-panel-title>{{playlist.title}}  </mat-panel-title>
@@ -53,6 +53,6 @@
        </mat-accordion>
 
 
- </cdk-virtual-scroll-viewport> 
+ </ng-scrollbar> 
 
   
