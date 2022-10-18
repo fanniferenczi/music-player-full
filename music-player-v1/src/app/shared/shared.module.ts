@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import {MatButtonModule} from '@angular/material/button';
 import { NgScrollbarModule } from 'ngx-scrollbar';
+import {MatIconModule} from '@angular/material/icon';
 
 
 @NgModule({
@@ -44,7 +45,8 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
     MatInputModule,
     ReactiveFormsModule,
     MatButtonModule,
-    NgScrollbarModule
+    NgScrollbarModule,
+    MatIconModule
   ],
   exports: [
     HeaderComponent,

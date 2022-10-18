@@ -6,7 +6,7 @@
     margin-top: 50px;
     background-color: #060a05;
     color: white;
-}
+} 
 
 .list-group{
     padding-top: 10px;
@@ -96,11 +96,10 @@
   .example-viewport {
     height: 85%;
     width: 100%;
-    /* border: 1px solid black; */
   }
   
   .example-item {
-    height: 50px;
+    height: 40px;
   }
  
   .cdk-drag-preview{
@@ -123,19 +122,13 @@
     border-radius: 5px;
   }
 
-  .deletebtn{
-    background-color: transparent;
-    background-repeat: no-repeat;
-    border: none;
-    cursor: pointer;
-    overflow: hidden;
-    outline: none;
-    height: 20px;
+
+.delete-btn:hover{
+  color: #dc3545;
+  cursor: pointer;
 }
 
-.deletebtn:hover{
-    color: #dc3545;
-}
+
 .sidebar-list{
   display: flex;
   align-items:flex-start; 
@@ -150,10 +143,30 @@ color:#dc3545;
 .add-button:hover{
   color:#dc3545;
 }
+.add-button{
+  background-color: #222020;
+  height: 30px;
+}
 .add-all-button{
   font-size: small;
   margin-right: 10px;
-  color:#dc3545;
+  color:white;
+}
+.add-all-button:hover{
+  color: #dc3545;
+}
+
+.new-playlist-button{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 5px;
+}
+.delete-playlist-button{
+  color: #fff;
+}
+.delete-playlist-button:hover{
+  color: #dc3545;
 }
 
   /* expansion panel */
@@ -181,16 +194,8 @@ color:#dc3545;
     color: white
   }
 
-/*
-  .mat-expansion-panel-header.mat-expanded,
-.mat-expansion-panel-header.mat-expanded:hover {
-  background: rgb(32, 32, 32);
-  color:white;
-}
-.mat-expansion-panel-header{
-  background: rgb(32, 32, 32);
-  color:white;
-}
-.mat-expansion-panel-header:hover{
-  background: blue;
-}*/
+  ::ng-deep .specific-class > .mat-expansion-indicator:after {
+    color: white;
+  }
+ 
+

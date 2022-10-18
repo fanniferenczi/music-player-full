@@ -12,7 +12,6 @@
     </div>
   </div>
 
-
   <div class="navigation">
     <div class="col-sm-1 start"> 
       <div *ngIf="song">
@@ -29,21 +28,21 @@
 
     <div  class="col-sm-2 nav-buttons"> 
       <div style="margin-top: 5px; ">
-        <button class="btn btn-danger" (click)="onBackSong(song)">Back</button>
-        <button class="btn btn-danger play_pause" (click)="play(song)">
+        <mat-icon class="back-button" (click)="onBackSong(song)">skip_previous</mat-icon>
+        <button mat-mini-fab color="primary" (click)="play(song)" >
           <div *ngIf="song===undefined || !isPlaying">
-             Play
-          </div>
-          <div *ngIf="isPlaying">
-            Pause
-          </div>
+            <mat-icon>play_arrow</mat-icon>
+         </div>
+         <div *ngIf="isPlaying">
+          <mat-icon>pause</mat-icon>
+         </div>
         </button>
-        <button class="btn btn-danger" (click)="onNextSong(song)">Next</button>
+        <mat-icon class="next-button" (click)="onNextSong(song)">skip_next</mat-icon>
       </div>
     </div>
 
     <div  class="col-sm-4 volume-space"> 
-         <mat-slider  
+      <mat-slider  
         *ngIf="song"
         class="example-margin"
         [max]="max"
@@ -60,7 +59,6 @@
         [step]="step"
         [(ngModel)]="systemVolume">
       </mat-slider> 
-    
     </div>
 
     <div  class="col-sm-1 end">
@@ -69,7 +67,5 @@
       </div>
       <div *ngIf="song===undefined">00:00</div>      
     </div>
-
   </div>
-
 </footer>

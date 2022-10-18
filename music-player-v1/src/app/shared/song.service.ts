@@ -8,16 +8,18 @@ export class SongService {
   sendAudio=new Subject()
   sendNext=new Subject()
   sendBack=new Subject()
-  sendIndexes=new Subject()
+  sendInformation=new Subject()
   sendAddedSong=new Subject()
   sendSongAndIndex=new Subject()
   sendNextSongTitle=new Subject()
+  sendTabs=new Subject();
+
+  constructor() { }
 
   communicateAddedSong(audio:any){
     this.sendAddedSong.next(audio)
   }
-  constructor() { }
-
+  
   communicateSong(audio:any){
     this.sendAudio.next(audio)
   }
@@ -28,9 +30,9 @@ export class SongService {
   communicateBack(audio:any){
     this.sendBack.next(audio)
   }
-  communicateIndexes(source:number,target:number){
-    let indexes=[source,target]
-    this.sendIndexes.next(indexes)
+  communicateInformation(source:number,target:number,sourcePlylistId:number){
+    let indexes=[source,target,sourcePlylistId]
+    this.sendInformation.next(indexes)
   }
 
   communicateSongAndIndex(audio:any,index:number){
@@ -40,5 +42,9 @@ export class SongService {
 
   communicateNextSongTitle(sonsTitle:string){
     this.sendNextSongTitle.next(sonsTitle)
+  }
+
+  communicateTabs(queues:string[]){
+    this.sendTabs.next(queues)
   }
 }

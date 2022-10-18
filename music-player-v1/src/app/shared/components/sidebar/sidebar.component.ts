@@ -1,7 +1,6 @@
 import { SonglibraryService } from '../../songlibrary.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { SongService } from '../../song.service';
-import { FooterComponent } from '../footer/footer.component';
 import { CdkDragDrop, copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
@@ -25,42 +24,49 @@ export class SidebarComponent implements OnInit {
   ngOnInit(): void {
     this.getAllSongs()
     this.getUserPlaylists()
-
-    this.songService.sendIndexes.subscribe(array=>{
-      this.ddIndexes=array
-      this.ddAdd(this.ddIndexes[0],this.ddIndexes[1])
-    })
+    this.getInformation()
+    this.getTabs()
   }
  
-  
-  playlists:Playlist[]=[]
+  tabs:any
+  playlists:Playlist[]=[] 
   songs:string[]=[]
-  path:string=''
-  public addedSongs:InstanceType<typeof Audio>[]=[]
-  ddIndexes:any
-  idCounter:number=0
+  ddInformation:any
+  playlistIds:number[]=[1]
 
+getInformation(){
+  this.songService.sendInformation.subscribe(array=>{
+    this.ddInformation=array
+    this.ddAdd(this.ddInformation[0],this.ddInformation[1],this.ddInformation[2])
+  })
+}
+
+getTabs(){
+  this.songService.sendTabs.subscribe(array=>{
+    this.tabs=array
+  })
+}
 
   getAllSongs(){
     this.libraryService.getAllSong().subscribe(
       response=>{
         this.songs=response
-        let initialPlaylist:Playlist={title:'Available Songs', items:this.songs,id:++this.idCounter,  panelOpenState: false}
+        let initialPlaylist:Playlist={title:'Available Songs', items:this.songs,id:this.playlistIds[0],  panelOpenState: false}
         this.playlists.push(initialPlaylist)
       }
     );
   }
+  
 
   getUserPlaylists(){
     let keys=Object.keys(localStorage)
     for(let i=0;i<keys.length;i++){
       if(!keys[i].startsWith("Queue")){
         let data= JSON.parse(localStorage.getItem(keys[i])|| '{}')
-        let loadedPlaylist:Playlist={title:keys[i],items:data,id:this.idCounter,panelOpenState: false}
+        let newId=this.generatePlaylistId()
+        let loadedPlaylist:Playlist={title:keys[i],items:data,id:newId,panelOpenState: false}
         this.playlists.unshift(loadedPlaylist)
-        console.log(this.playlists)
       }
-      
     }
   }
  
@@ -69,44 +75,34 @@ export class SidebarComponent implements OnInit {
   } 
 
  onAdd(audio:string){
-   if(this.addedSongs.findIndex(x=>x.title===audio)===-1){
       this.libraryService.getSong(audio).subscribe(
         response=>{
-          this.path=response
-          let tmp=new Audio(this.path)
+          let path=response
+          let tmp=new Audio(path)
           tmp.title=audio
          this.songService.communicateAddedSong(tmp)
         }
       )
-    }
-    else{
-      alert(audio+" is already added!")
-    }
   }
 
 
   getConnectedList(): any[] {
-    let connected=this.playlists.map(x => `${x.id}`)
-    connected.push('list-2')
+    let playlists=this.playlists.map(x => `${x.id}`)
+     let connected=playlists.concat(this.tabs)
     return connected
   }
 
-  ddAdd(sourceIndex:number,targetIndex:number){
-    if(this.addedSongs.findIndex(x=>x.title===this.songs[sourceIndex])===-1){
-      this.libraryService.getSong(this.songs[sourceIndex]).subscribe(
+  ddAdd(sourceIndex:number,targetIndex:number,sourcePlaylistId:number){
+      let sourcePlyalist=this.playlists.find(x=>x.id==sourcePlaylistId)
+      this.libraryService.getSong(sourcePlyalist!.items[sourceIndex]).subscribe(
         response=>{
-          this.path=response
-          let tmp=new Audio(this.path)
-          tmp.title=this.songs[sourceIndex]
+          let path=response
+          let tmp=new Audio(path)
+          tmp.title=sourcePlyalist!.items[sourceIndex]
          this.songService.communicateSongAndIndex(tmp,targetIndex)
         }
       )
-    }
-    else{
-      alert(this.songs[sourceIndex]+" is already added!")
-    }
   }
-
 
   drop(event: CdkDragDrop<string[]>,playlist:any) {
     if (event.previousContainer === event.container) {
@@ -118,7 +114,6 @@ export class SidebarComponent implements OnInit {
         copyArrayItem (event.previousContainer.data, event.container.data,event.previousIndex, event.currentIndex)
         localStorage.setItem(playlist.title,JSON.stringify(playlist.items))
       }
-      
       else{
         alert(song + ' is already added to this playlist!')
       }      
@@ -143,19 +138,19 @@ export class SidebarComponent implements OnInit {
     localStorage.setItem(playlist.title,JSON.stringify(playlist.items))
   }
  
-  title: string=''
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
       width: '250px',
-      data: {title: this.title},
+      data: {title: ''},
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if(result!==undefined ){
         if(this.playlists.findIndex(x=>x.title===result)===-1){
           let tmp :string[]=[]
-          let newPlaylist:Playlist={title:result,items:tmp,id:++this.idCounter,panelOpenState: false}
+          let newId=this.generatePlaylistId()
+          let newPlaylist:Playlist={title:result,items:tmp,id:newId,panelOpenState: false}
           this.playlists.unshift(newPlaylist)
           localStorage.setItem(newPlaylist.title,JSON.stringify(newPlaylist.items))
         }
@@ -170,7 +165,12 @@ export class SidebarComponent implements OnInit {
     for(let i=0;i<playlist.items.length;i++){
       this.onAdd(playlist.items[i])
     }
-    
+  }
+  generatePlaylistId(){
+    let max = this.playlistIds.reduce((a, b) => Math.max(a, b));
+    let newId=++max
+    this.playlistIds.push(newId);
+    return newId
   }
 }
 
@@ -179,10 +179,12 @@ export interface DialogData {
 }
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'dialog-overview-example-dialog',
   templateUrl: 'dialog-overview-example-dialog.html',
   styleUrls: ['./dialog.css']
 })
+// eslint-disable-next-line @angular-eslint/component-class-suffix
 export class DialogOverviewExampleDialog {
   constructor(
     public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
