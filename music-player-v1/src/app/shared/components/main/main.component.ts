@@ -19,6 +19,7 @@ interface Tab {
   tabName: string;
   songs: any[];
   activeSong: any;
+  id: number;
 }
 
 @Component({
@@ -56,26 +57,40 @@ export class MainComponent implements OnInit {
     { value: 3, viewValue: '3' },
   ];
 
+  createInitTab(){
+    let initSongs: InstanceType<typeof Audio>[] = [];
+    let initTab:Tab={tabName: "Queue 1",songs: initSongs,activeSong: '', id: 1}
+    this.tabs.push(initTab)
+    this.sendTabNames()
+  }
+
   getUserQueus() {
     let keys = Object.keys(localStorage);
-    for (let i = 0; i < keys.length; i++) {
-      if (keys[i].startsWith('Queue')) {
-        let songTitles = JSON.parse(localStorage.getItem(keys[i]) || '{}');
-        let loadedSongs: InstanceType<typeof Audio>[] = [];
-        for (let i = 0; i < songTitles.length; i++) {
-          this.libraryService.getSong(songTitles[i]).subscribe((response) => {
-            let path = response;
-            let tmp = new Audio(path);
-            tmp.title = songTitles[i];
-            loadedSongs.push(tmp);
-          });
+    let queueKeys=keys.filter(x=> x.startsWith('Queue'))
+    console.log(queueKeys)
+    if(queueKeys.length!==0){
+      for (let i = 0; i < queueKeys.length; i++) {
+        if (queueKeys[i].startsWith('Queue')) {
+          let songTitles = JSON.parse(localStorage.getItem(queueKeys[i]) || '{}');
+          let loadedSongs: InstanceType<typeof Audio>[] = [];
+          for (let i = 0; i < songTitles.length; i++) {
+            this.libraryService.getSong(songTitles[i]).subscribe((response) => {
+              let path = response;
+              let tmp = new Audio(path);
+              tmp.title = songTitles[i];
+              loadedSongs.push(tmp);
+            });
+          }
+          let listName: string[] = queueKeys[i].split(' ');
+          let tabId:number=+listName[1];
+          let loadedTab: Tab = {tabName: queueKeys[i],songs: loadedSongs,activeSong: '',id:tabId};
+          this.tabs.push(loadedTab);
+          this.sendTabNames()
         }
-        let loadedTab: Tab = {tabName: keys[i],songs: loadedSongs,activeSong: ''};
-        this.tabs.push(loadedTab);
-        this.sendTabNames()
-        let listName: string[] = keys[i].split(' ');
-        this.tabNumbers.push(+listName[1]);
       }
+    }
+    else{
+      this.createInitTab()
     }
      this.tabs.sort( (a,b)=>a.tabName > b.tabName ? 1: -1 )
   }
@@ -137,9 +152,9 @@ export class MainComponent implements OnInit {
   }
 
 
-  drop(event: CdkDragDrop<string[]>, songs: any, tab: Tab) {
+  drop(event: CdkDragDrop<string[]>, tab: Tab) {
     if (event.previousContainer === event.container) {
-      moveItemInArray(songs, event.previousIndex, event.currentIndex);
+      moveItemInArray(tab.songs, event.previousIndex, event.currentIndex);
     } else {
       this.songService.communicateInformation(
         event.previousIndex,
@@ -210,11 +225,12 @@ export class MainComponent implements OnInit {
       pairs.push(tmp);
     }
     let sorted = pairs.sort((a, b) => (a.weight > b.weight ? -1 : 1));
-    let tabNumber=this.generateTabNumber()
+    let tabId=this.generateTabId()
     let tab: Tab = {
-      tabName: 'Queue ' + tabNumber,
+      tabName: 'Queue ' + tabId,
       songs: sorted.map((x) =>this.tabs[this.selected.value].songs.find((item: { title: string }) => item.title == x.title)),
       activeSong: '',
+      id: tabId
     };
 
     this.tabs.push(tab);
@@ -224,8 +240,8 @@ export class MainComponent implements OnInit {
   }
 
   newTab() {
-    let tabNumber=this.generateTabNumber()
-    let tab: Tab = { tabName: 'Queue ' + tabNumber, songs: [], activeSong: '' };
+    let tabId=this.generateTabId()
+    let tab: Tab = { tabName: 'Queue ' + tabId, songs: [], activeSong: '',id:tabId };
     this.tabs.push(tab);
     this.sendTabNames()
     this.uploadTabToLocalStorage(tab)
@@ -234,10 +250,6 @@ export class MainComponent implements OnInit {
 
   removeTab() {
     localStorage.removeItem(this.tabs[this.selected.value].tabName);
-    let listname = this.tabs[this.selected.value].tabName.split(' ');
-    if (this.tabNumbers.indexOf(+listname[1]) > -1) {
-      this.tabNumbers.splice(this.tabNumbers.indexOf(+listname[1]), 1);
-    }
     this.tabs.splice(this.selected.value, 1);
   }
 
@@ -265,10 +277,11 @@ export class MainComponent implements OnInit {
     }
   }
 
-  generateTabNumber(){
-    let max = this.tabNumbers.reduce((a, b) => Math.max(a, b));
+  generateTabId(){
+    let tabIds=this.tabs.map(x => x.id)
+    console.log(tabIds)
+    let max = tabIds.reduce((a, b) => Math.max(a, b));
     let newNumber=++max
-    this.tabNumbers.push(newNumber);
     return newNumber
   }
 }

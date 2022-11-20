@@ -6,14 +6,15 @@
     </button>
   </div>
     
- <ng-scrollbar style="height: 720px" class="example-viewport"> 
+ <ng-scrollbar style="height: 85%" class="example-viewport"> 
 
-  <mat-accordion [multi]="true" cdkDropList 
+  <mat-accordion [multi]="true" 
+  cdkDropList 
   (cdkDropListDropped)="dropPlaylist($event)" >
     <mat-expansion-panel  
-    cdkDropListGroup class="example-container" 
     *ngFor="let playlist of playlists;" 
-    cdkDrag [cdkDragData]="playlist"
+    class="example-container"
+    cdkDrag 
     (opened)="playlist.panelOpenState = true" 
     (closed)="playlist.panelOpenState = false">
         <mat-expansion-panel-header  class="specific-class">
@@ -24,23 +25,23 @@
           <button *ngIf="playlist.panelOpenState === true" class="btn btn-link add-all-button" (click)="addAll(playlist)">Add all</button>
           <div *ngIf="playlist.title!== 'Available Songs'"
           (click)="deletePlaylist(playlist)"
-          style="margin-right:30px; " 
           class="delete-playlist-button"> 
             <mat-icon style="padding-top: 7px;font-size:23px">delete_sweep</mat-icon>
           </div>
         </mat-expansion-panel-header>         
               <div 
-              cdkDropList class=" example-list" 
+              class="example-list" 
+              cdkDropList 
               id={{playlist.id}}
+              [cdkDropListConnectedTo]="getConnectedList()"
               [cdkDropListData]="playlist.items"               
-              (cdkDropListDropped)="drop($event,playlist)" 
-              [cdkDropListConnectedTo]="getConnectedList()">
-                  <div class="example-box example-item " *ngFor="let song of playlist.items" cdkDrag>
+              (cdkDropListDropped)="dropIntoPlaylist($event)">
+                  <div class="example-box" *ngFor="let song of playlist.items" cdkDrag>
                     <div class="col-9">{{song}}</div>
                     <div *ngIf="playlist.title!== 'Available Songs'" class="delete-btn" (click)="deleteSong(song,playlist)">
                         <mat-icon style="font-size: 25px;">delete_outline</mat-icon>                    
                     </div>
-                    <button class="btn btn-light add-button" type="button" (click)="onAdd(song)" >
+                    <button class="btn btn-light add-button" type="button" (click)="addToTab(song)" >
                         <mat-icon style="font-size: 20px; padding-top: 2px;" >double_arrow</mat-icon>
                     </button>
                   </div>

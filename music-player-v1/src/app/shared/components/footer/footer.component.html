@@ -6,7 +6,7 @@
     <p>{{song.title}}</p>
   </div>
   
-  <div class="progress_bar" #progress_bar (click)="onClickProgress($event,song)">
+  <div class="progress_bar" #progress_bar >
     <div *ngIf="song">
       <div class="progressed" [style.width.%]="song.currentTime*(100/song.duration)"></div> 
     </div>

@@ -17,6 +17,7 @@ namespace MusicPlayerBlob.Services
             var blobClient= containerClient.GetBlobClient(model.SongFile.FileName);
             await blobClient.UploadAsync(model.SongFile.OpenReadStream());
 
+           
         }
 
         public async Task<byte[]> Read(string fileName, string containerName)
@@ -38,7 +39,7 @@ namespace MusicPlayerBlob.Services
             return blobClient.Uri.AbsoluteUri;
         }
 
-        public async Task<IEnumerable<string>> AllBlobs(string containerName)
+        public async Task<IEnumerable<string>> GetAllBlobs(string containerName)
         {
             //acces to the container -> allow us to acces the data inside the container
             var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);

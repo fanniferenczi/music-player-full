@@ -1,4 +1,4 @@
-import { Tile } from './../../../app.component';
+
 import { SongService } from './../../song.service';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatSliderChange } from '@angular/material/slider';
@@ -17,12 +17,12 @@ export class FooterComponent implements OnInit, AfterViewInit {
     this.getNextSongTitle();
   }
 
-  max = 0.8;
+  max = 0.4;
   min = 0;
   step = 0.01;
   vertical = false;
   tickInterval = 0.01;
-  systemVolume = 0.4;
+  systemVolume = 0.2;
   song: any;
   isPlaying = false;
   nextSongTitle: any = '';
@@ -46,12 +46,12 @@ export class FooterComponent implements OnInit, AfterViewInit {
     this.progressbarElementRef?.nativeElement.focus();
   }
 
-  onClickProgress(event: MouseEvent, song: any) {
-    //song.currentTime=(event.offsetX/this.progressbarElementRef?.nativeElement.offsetWidth)*song.duration;
-    //ha a zenéket nem stream-eljük működik a kattintásos tekerés a progressbar-on
-    song.currentTime = 20; //visszugrik 0-ra, sajnos egyelőre nincs megoldás
-    console.log('ugrás');
-  }
+  // onClickProgress(event: MouseEvent, song: any) {
+  //   //song.currentTime=(event.offsetX/this.progressbarElementRef?.nativeElement.offsetWidth)*song.duration;
+  //   //ha a zenéket nem stream-eljük működik a kattintásos tekerés a progressbar-on
+  //   song.currentTime = 20; //visszugrik 0-ra, sajnos egyelőre nincs megoldás
+  //   console.log('ugrás');
+  // }
 
   getSong() {
     this.songService.sendAudio.subscribe((audio) => {

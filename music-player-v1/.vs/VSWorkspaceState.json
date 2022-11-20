@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\shared",
+    "\\src\\app\\shared\\components",
+    "\\src\\app\\shared\\components\\sidebar"
+  ],
+  "SelectedNode": "\\src\\app\\shared\\components\\sidebar\\sidebar.component.html",
+  "PreviewInSolutionExplorer": false
+}

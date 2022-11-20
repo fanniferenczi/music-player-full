@@ -12,9 +12,8 @@ export class SonglibraryService {
 
   readonly baseURL='https://localhost:7147/Song'
   
-  
   getSong(fileName:string):Observable<string>{
-    return this.http.get(this.baseURL+'/get/'+fileName,{responseType: 'text'})
+    return this.http.get(this.baseURL+'/get/'+fileName,{responseType: 'text'});
   }
 
   getAllSong():Observable<string[]>{

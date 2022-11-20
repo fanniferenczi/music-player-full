@@ -32,18 +32,18 @@ namespace MusicPlayerBlob.Controllers
             return File(songData, "audio/mpeg");
         }
 
-      [HttpGet]
+      [HttpGet]  
       [Route("get/{fileName}")]
       public async Task<IActionResult> Get(string fileName)
         {
             return Ok(await _blobService.GetBlob(fileName, "musiclibrary"));
         }
 
-        [HttpGet]  //getting all the blobs
+        [HttpGet]  
         [Route("getAll")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> GetAll()
         {
-           return Ok(await _blobService.AllBlobs("musiclibrary"));
+           return Ok(await _blobService.GetAllBlobs("musiclibrary"));
 
         }
     }

@@ -10,13 +10,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//injecting the connection string from the app settings
+//get the connection string from the appsettings
 var blobConnection = builder.Configuration.GetValue<string>("AzureStorage");
 
-//injecting the blobserviceclient into our DI container
+//injecting the blobserviceclient 
 builder.Services.AddSingleton(x => new BlobServiceClient(blobConnection));
 
-//injecting the blobservice into the DI
+//injecting the blobservice
 builder.Services.AddSingleton<IBlobService, BlobService>();
 
 
