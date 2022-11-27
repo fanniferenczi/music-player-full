@@ -13,7 +13,7 @@ footer{
   }
   .start{
     display: flex;
-    justify-content: start;
+    justify-content: flex-start;
   }
   .next{
     display: flex;
@@ -30,7 +30,7 @@ footer{
   }
   .end{
     display: flex;
-    justify-content: end;
+    justify-content: flex-end;
   }
   
   .play_pause{
@@ -99,6 +99,13 @@ footer{
     color: #dc3545;
     cursor: pointer;
   }
+  .volume_icon{
+    padding-top: 7px;
+  }
+  .volume_icon:hover{
+    cursor: pointer;
+  }
+ 
  
 
 

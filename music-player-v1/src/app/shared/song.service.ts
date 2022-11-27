@@ -6,13 +6,11 @@ import { Observable, Subject } from 'rxjs';
 })
 export class SongService {
   sendAudio=new Subject()
-  sendNext=new Subject()
-  sendBack=new Subject()
-  sendInformation=new Subject()
+  sendCurrentForNext=new Subject()
+  sendCurrentForPrev=new Subject()
   sendAddedSong=new Subject()
-  sendSongAndIndex=new Subject()
   sendNextSongTitle=new Subject()
-  sendTabs=new Subject();
+  sendTabs=new Subject()
 
   constructor() { }
 
@@ -24,20 +22,11 @@ export class SongService {
     this.sendAudio.next(audio)
   }
 
-  communicateNext(audio:any){
-    this.sendNext.next(audio)
+  commCurrentForNext(audio:any){
+    this.sendCurrentForNext.next(audio)
   }
-  communicateBack(audio:any){
-    this.sendBack.next(audio)
-  }
-  communicateInformation(source:number,target:number,sourcePlylistId:number){
-    let indexes=[source,target,sourcePlylistId]
-    this.sendInformation.next(indexes)
-  }
-
-  communicateSongAndIndex(audio:any,index:number){
-    let songAndIndex=[audio,index];
-    this.sendSongAndIndex.next(songAndIndex)
+  commCurrentForPrev(audio:any){
+    this.sendCurrentForPrev.next(audio)
   }
 
   communicateNextSongTitle(sonsTitle:string){

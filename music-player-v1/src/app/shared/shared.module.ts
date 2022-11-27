@@ -20,7 +20,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { MatIconModule } from '@angular/material/icon';
 import { HttpClientModule } from '@angular/common/http';
-// import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { DialogOverviewExampleDialog } from './components/sidebar/dialogoverviewexampledialog.component';
 
 @NgModule({
@@ -49,8 +48,7 @@ import { DialogOverviewExampleDialog } from './components/sidebar/dialogoverview
     MatButtonModule,
     NgScrollbarModule,
     MatIconModule,
-    HttpClientModule,
-    // HttpClientTestingModule
+    HttpClientModule
   ],
   exports: [HeaderComponent, SidebarComponent, FooterComponent, MainComponent],
 })

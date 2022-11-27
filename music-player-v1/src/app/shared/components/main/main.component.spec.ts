@@ -8,8 +8,6 @@ describe('MainComponent', () => {
   let component: MainComponent;
   let fixture: ComponentFixture<MainComponent>;
   let songlibraryService: SonglibraryService;
-  let mockSongService:any;
-  let mockLoaderService:any;
   let httpMock:HttpTestingController
 
   beforeEach(async () => {
@@ -19,8 +17,8 @@ describe('MainComponent', () => {
       providers:[SonglibraryService]
     })
     .compileComponents();
-    songlibraryService=TestBed.get(SonglibraryService)
-    httpMock=TestBed.get(HttpTestingController)
+    songlibraryService=TestBed.inject(SonglibraryService)
+    httpMock=TestBed.inject(HttpTestingController)
   });
 
   beforeEach(() => {
@@ -29,29 +27,36 @@ describe('MainComponent', () => {
     fixture.detectChanges();
   });
 
-  // beforeEach(()=>{
-  //   mockSonglibraryService=jasmine.createSpyObj(['getSong','getAll'])
-  //   mockSongService=jasmine.createSpyObj([])
-  //   mockLoaderService=jasmine.createSpyObj([])
-  //   component=new MainComponent(mockSongService,mockLoaderService,mockSonglibraryService)
-  // })
 
-  afterEach(()=>{
-    httpMock.verify();
-
-  })
+  afterEach(()=>{})
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should create an init tab',()=>{
+
+  it('should create a new tab',()=>{
     const lengthBefore=component.tabs.length
-    component.ngOnInit();
+    component.newTab()
     expect(component.tabs.length).toBe(lengthBefore+1)
-  });
+  })
+
+  it('should delete a tab',()=>{
+    const tab={id:0,tabName:'Q0',songs:['song1','song2','song3'],playingSong:''}
+    component.tabs.push(tab)
+    const lengthBefore=component.tabs.length
+    component.removeTab()
+    expect(component.tabs.length).toBe(lengthBefore-1)
+  })
+
+  it('should delete song from tab',()=>{
+    const tab={id:0,tabName:'Q0',songs:['song1','song2','song3'],playingSong:''}
+    component.tabs.push(tab)
+    component.deleteSong('song2',tab)
+    expect(component.tabs[component.tabs.length-1].songs.length).toBe(2)
+    expect(component.tabs[component.tabs.length-1].songs).not.toContain('song2')
+  })
 
 
-
-});
+}); 
 

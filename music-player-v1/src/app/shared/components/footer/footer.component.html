@@ -1,12 +1,12 @@
 <footer>
-  <div class="title" *ngIf="song===undefined">
-    <p>Music Title</p>
-  </div>
   <div class="title" *ngIf="song" >
     <p>{{song.title}}</p>
   </div>
+  <div class="title" *ngIf="song===undefined">
+    <p>Music Title</p>
+  </div>
   
-  <div class="progress_bar" #progress_bar >
+  <div class="progress_bar" >
     <div *ngIf="song">
       <div class="progressed" [style.width.%]="song.currentTime*(100/song.duration)"></div> 
     </div>
@@ -21,14 +21,14 @@
     </div>
 
     <div  class="col-sm-4 next">  
-      <div>
+      <div style="padding-top: 10px;">
         <p>Next: {{nextSongTitle}}</p>
       </div>
     </div>
 
     <div  class="col-sm-2 nav-buttons"> 
       <div style="margin-top: 5px; ">
-        <mat-icon class="back-button" (click)="onBackSong(song)">skip_previous</mat-icon>
+        <mat-icon class="back-button" (click)="prevSong(song)">skip_previous</mat-icon>
         <button mat-mini-fab color="primary" (click)="play(song)" >
           <div *ngIf="song===undefined || !isPlaying">
             <mat-icon>play_arrow</mat-icon>
@@ -37,19 +37,25 @@
           <mat-icon>pause</mat-icon>
          </div>
         </button>
-        <mat-icon class="next-button" (click)="onNextSong(song)">skip_next</mat-icon>
+        <mat-icon class="next-button" (click)="nextSong(song)">skip_next</mat-icon>
       </div>
     </div>
 
     <div  class="col-sm-4 volume-space"> 
+      <div  *ngIf="song">
+      <mat-icon *ngIf="song.volume!==0" class="volume_icon"  (click)="mute(song)">volume_down_alt</mat-icon>
+      <mat-icon *ngIf="song.volume===0" class="volume_icon"  (click)="unMute(song)">volume_mute</mat-icon>
+    </div>
+    <div  *ngIf="song===undefined">
+      <mat-icon  style="padding-top: 7px;" >volume_down_alt</mat-icon>
+    </div>
       <mat-slider  
         *ngIf="song"
         class="example-margin"
         [max]="max"
         [min]="min"
         [step]="step"
-        [(ngModel)]="song.volume"
-        aria-labelledby="example-name-label">
+        [(ngModel)]="song.volume">
       </mat-slider>   
 
       <mat-slider 

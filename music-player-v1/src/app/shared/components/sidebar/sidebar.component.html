@@ -1,22 +1,23 @@
 <div class="sidebar-header">
   <div><h2>Library</h2></div>
-    <button at-raised-button class="btn btn-outline-light new-playlist-button" (click)="openDialog()" >
-        <mat-icon>playlist_add</mat-icon>
-        <div style="font-size: larger;"> New Playlist</div> 
-    </button>
-  </div>
+  <button at-raised-button class="btn btn-outline-light new-playlist-button" (click)="openDialog()" >
+      <mat-icon>playlist_add</mat-icon>
+      <div style="font-size: larger;"> New Playlist</div> 
+  </button>
+</div>
     
- <ng-scrollbar style="height: 85%" class="example-viewport"> 
+<ng-scrollbar style="height: 85%" class="example-viewport"> 
 
-  <mat-accordion [multi]="true" 
+<mat-accordion 
+  [multi]="true" 
   cdkDropList 
   (cdkDropListDropped)="dropPlaylist($event)" >
     <mat-expansion-panel  
-    *ngFor="let playlist of playlists;" 
-    class="example-container"
-    cdkDrag 
-    (opened)="playlist.panelOpenState = true" 
-    (closed)="playlist.panelOpenState = false">
+     *ngFor="let playlist of playlists;" 
+     class="example-container"
+     cdkDrag 
+     (opened)="playlist.panelOpenState = true" 
+     (closed)="playlist.panelOpenState = false">
         <mat-expansion-panel-header  class="specific-class">
           <mat-panel-title>
             <mat-icon *ngIf="playlist.title === 'Available Songs'" style="font-size: 20px; margin-right:5px">home</mat-icon>
@@ -29,25 +30,25 @@
             <mat-icon style="padding-top: 7px;font-size:23px">delete_sweep</mat-icon>
           </div>
         </mat-expansion-panel-header>         
-              <div 
-              class="example-list" 
-              cdkDropList 
-              id={{playlist.id}}
-              [cdkDropListConnectedTo]="getConnectedList()"
-              [cdkDropListData]="playlist.items"               
-              (cdkDropListDropped)="dropIntoPlaylist($event)">
-                  <div class="example-box" *ngFor="let song of playlist.items" cdkDrag>
-                    <div class="col-9">{{song}}</div>
-                    <div *ngIf="playlist.title!== 'Available Songs'" class="delete-btn" (click)="deleteSong(song,playlist)">
-                        <mat-icon style="font-size: 25px;">delete_outline</mat-icon>                    
-                    </div>
-                    <button class="btn btn-light add-button" type="button" (click)="addToTab(song)" >
-                        <mat-icon style="font-size: 20px; padding-top: 2px;" >double_arrow</mat-icon>
-                    </button>
-                  </div>
-                </div>  
-           </mat-expansion-panel>
-       </mat-accordion>
- </ng-scrollbar> 
+        <div 
+          class="example-list" 
+          cdkDropList 
+          id={{playlist.id}}
+          [cdkDropListConnectedTo]="getConnectedList()"
+          [cdkDropListData]="playlist.items"               
+          (cdkDropListDropped)="dropIntoPlaylist($event)">
+            <div class="example-box" *ngFor="let song of playlist.items" cdkDrag>
+              <div class="col-9">{{song}}</div>
+              <div *ngIf="playlist.title!== 'Available Songs'" class="delete-btn" (click)="deleteSong(song,playlist)">
+                   <mat-icon style="font-size: 25px;">delete_outline</mat-icon>                    
+              </div>
+              <button class="btn btn-light add-button" type="button" (click)="addToTab(song)" >
+                  <mat-icon style="font-size: 20px; padding-top: 2px;" >double_arrow</mat-icon>
+              </button>
+            </div>
+        </div>  
+      </mat-expansion-panel>
+  </mat-accordion>
+</ng-scrollbar> 
 
   
